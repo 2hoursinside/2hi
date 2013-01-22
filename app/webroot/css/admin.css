@@ -1,0 +1,388 @@
+/* SVN FILE: $Id: cake.generic.css 7945 2008-12-19 02:16:01Z gwoo $ */
+/**
+ *
+ * PHP versions 4 and 5
+ *
+ * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
+ * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @filesource
+ * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.app.webroot.css
+ * @since         CakePHP(tm)
+ * @version       $Revision: 7945 $
+ * @modifiedby    $LastChangedBy: gwoo $
+ * @lastmodified  $Date: 2008-12-18 18:16:01 -0800 (Thu, 18 Dec 2008) $
+ * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ */
+  
+
+/* General Style Info */
+
+* {margin:auto; padding:0}
+
+body {background-color:#d8d8d8; margin: 0; font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#333;}
+
+.pad10 {padding-left:10px;}
+.pad15 {padding-left:15px;}
+.pad20 {padding-left:20px;}
+.pad25 {padding-left:25px;}
+.pad30 {padding-left:30px;}
+
+
+h1{font: lighter 200% "Trebuchet MS", Arial sans-serif; display:inline;}
+h2{font: lighter 170% "Trebuchet MS", Arial sans-serif; padding-bottom:10px;}
+h3{font: lighter 130% "Trebuchet MS", Arial sans-serif;}
+h4 {color: #993;font-weight: normal;padding-top: 0.5em;}
+
+a 		{color:#003d4c; text-decoration: none}
+a:hover {text-decoration:underline; color:#83A51D;}
+a img 	{border:none; text-decoration:none}
+p 		{margin-bottom:10px;}
+
+.absmiddle {vertical-align:middle; margin-bottom: .25em; }
+
+.white {color:white;}
+.dark {color:#333;}
+.darkblue {color:#003d4c;}
+.green {color:#81a70c;}
+.bold {font-weight:bold;}
+.notes {font-size:11px; color:#81a70c;}
+
+.right {float:right;} .left {float:left;}
+.spacer, hr {clear:both;}
+
+/* Layout */
+
+#header			{width:807px; margin:auto; margin-top:30px;}
+#header-left 	{background:url(../img/header_left.png); width:25px; height:148px; float:left; }
+#header-center 	{background:url(../img/header_center.png) repeat-x; width:757px; height:148px; float:left;}
+#header-right 	{background:url(../img/header_right.png); width:25px; height:148px; float:left}
+
+#logo 			{ width:32px; height:59px; float:left; margin-top:30px; margin-left:15px;}
+.path 			{text-align:right; padding-top:30px; padding-right:5px;}
+
+#page 			{background:url(../img/page_bg_admin.png) repeat-y; width:807px; margin:auto;clear:both;}
+#content		{background: url(../img/content_bg.png) repeat-x white; min-height:385px; height:auto !important; height:385px; color: #333; margin-left:17px; width:754px;  padding:10px; padding-top:20px;}
+#footer			{clear: both; background:url(../img/footer_admin.png); width:807px; margin:auto; height:27px;}
+
+
+#menu {clear:both; padding-top:14px; height:40px;}
+#menu ul { list-style-type:none;}
+#menu ul li {float:left; }
+#menu ul li a {text-decoration:none;float:left; text-align:center; height:29px; padding-top:11px; padding-left:15px; padding-right:15px; display:block; text-shadow: #fff 0 1px 0;}
+#menu ul li a:hover {background:url(../img/menu-hover.png) repeat-x; color:#81A70C; }
+
+
+ul.play 			{list-style-type:none; margin:0; padding:0}
+ul.play li 			{background:url(../img/icons/li.png) no-repeat; padding-left:21px; height:23px; overflow:hidden; font:11px Tahoma;}
+
+ol.play 			{margin-left:20px;}
+
+
+/* Tables */
+table.data {
+	background: #fff;
+	font-size:11px;
+	border:1px solid #ccc;
+	border-right:0;
+	clear: both;
+	color: #333;
+	margin-bottom: 10px;
+	width: 100%;
+	border-collapse:collapse;
+	margin-top:10px;
+}
+table.data th {
+	background: #f2f2f2;
+	border:1px solid #bbb;
+	border-top: 1px solid #fff;
+	border-left: 1px solid #fff;
+	text-align: left;
+	padding-left:10px;
+	height:30px;
+}
+table.data th a {
+	background:#f2f2f2;
+	display: block;
+	padding: 2px 4px;
+	text-decoration: none;
+}
+table.data th a:hover {
+	background: #ccc;
+	color: #333;
+	text-decoration: none;
+}
+table.data tr.pair {background-color:#f9f9f9;}
+table.data tr:hover {background-color:#ffffdd;}
+table.data tr td {
+	border-right: 1px solid #ccc;
+	padding: 4px;
+	text-align: left;
+	padding-left:10px;
+	vertical-align: top;
+	border:1px solid #e7e7e7;
+}
+table.data tr.altrow td {}
+table.data td.actions {text-align: center;	white-space: nowrap;}
+table.data td.actions a {margin: 0px 6px;}
+
+
+/* Toolbar */
+table.toolbar {font-size:10px; width:100%}
+table.toolbar tr td.center {text-align:center;}
+
+
+/* Forms */
+form 	{clear: both; padding: 0;}
+
+fieldset 				{border: 1px solid #ccc; margin-top: 20px;	padding: 16px; width:80%; float:left; margin-left:50px;}
+fieldset legend 		{color: #81a70c; font:lighter 170% "Trebuchet MS", Arial, Helvetica, sans-serif;}
+fieldset fieldset 		{margin-top: 0px; margin-bottom: 20px; padding: 16px 10px;}
+fieldset fieldset div 	{clear: left; margin: 0 20px;}
+
+form div 			{clear: both; margin-bottom: 1em; padding: .5em;}
+form div.input 		{color: #444;}
+form div.required 	{color: #333;	font-weight: normal;}
+form div.submit 	{border: 0;	clear: both; margin-top: 10px;	margin-left: 200px;}
+
+label 				{display: block; float:left; width:180px;	padding-top:3px; text-align:right; padding-right:20px;}
+div.radio label 	{ margin: 0 0 6px 20px;}
+
+input[type=text]	{width:200px;}
+input, textarea 	{font-family: "Frutiger linotype", "Lucida Grande", "Verdana", sans-serif;	padding: 2px;}
+textarea 			{width:350px; height:200px; font:12px Arial;}
+select 				{ width:160px;}
+option 				{padding: 0 3px;}
+input[type=checkbox]{}
+input[type=radio] 	{width:auto; margin: 0 3px 7px 0;}
+input[type=submit] 	{ display: inline; padding: 2px 5px;	vertical-align: bottom;}
+
+
+
+
+
+.cake-sql-log table {
+	background: #f4f4f4;
+}
+.cake-sql-log td {
+	padding: 4px 8px;
+	text-align: left;
+}
+
+/* Paging */
+div.paging {
+	background:#fff;
+	color: #ccc;
+	margin-bottom: 2em;
+}
+div.paging div.disabled {
+	color: #ddd;
+	display: inline;
+}
+div.paging span {
+}
+div.paging span.current {
+	color: #000;
+}
+div.paging span a {
+}
+
+/* Scaffold View */
+dl {
+	line-height: 2em;
+	margin: 0em 0em;
+	width: 60%;
+}
+dl.altrow {
+	background: #f4f4f4;
+}
+dt {
+	font-weight: bold;
+	padding-left: 4px;
+	vertical-align: top;
+}
+dd {
+	margin-left: 10em;
+	margin-top: -2em;
+	vertical-align: top;
+}
+
+/* Notices and Errors */
+div.message {
+	clear: both;
+	color: white;
+	font-size:12px;
+	margin: 1em 0;
+}
+div.error-message {
+	clear: both;
+	color: #C00;
+	font-size:11px;
+	font-weight: bold;
+}
+p.error {
+	background-color: #e32;
+	color: #fff;
+	font-family: Courier, monospace;
+	font-size: 120%;
+	line-height: 140%;
+	padding: 0.8em;
+	margin: 1em 0;
+}
+p.error em {
+	color: #000;
+	font-weight: normal;
+	line-height: 140%;
+}
+.notice {
+	background: #ffcc00;
+	color: #000;
+	display: block;
+	font-family: Courier, monospace;
+	font-size: 120%;
+	line-height: 140%;
+	padding: 0.8em;
+	margin: 1em 0;
+}
+.success {
+	background: green;
+	color: #fff;
+}
+
+/*  Actions  */
+div.actions ul {
+	margin: 0px 0;
+	padding: 0;
+}
+div.actions li {
+	display: inline;
+	list-style-type: none;
+	line-height: 2em;
+	margin: 0 2em 0 0;
+	white-space: nowrap;
+}
+div.actions ul li a {
+	background:#fff;
+	color: #003d4c;
+	text-decoration: none;
+}
+div.actions ul li a:hover {
+	color: #333;
+	text-decoration: underline;
+}
+
+/* Related */
+div.related {
+	clear: both;
+	display: block;
+}
+
+/* Debugging */
+pre {
+	color: #000;
+	background: #f0f0f0;
+	padding: 1em;
+}
+pre.cake-debug {
+	background: #ffcc00;
+	font-size: 120%;
+	line-height: 140%;
+	margin-top: 1em;
+	overflow: auto;
+	position: relative;
+}
+div.cake-stack-trace {
+	background: #fff;
+	border: 4px dotted #ffcc00;
+	color: #333;
+	margin: 0px;
+	padding: 6px;
+	font-size: 120%;
+	line-height: 140%;
+	overflow: auto;
+	position: relative;
+}
+div.cake-code-dump pre {
+	position: relative;
+	overflow: auto;
+}
+div.cake-stack-trace pre, div.cake-code-dump pre {
+	color: #000;
+	background-color: #F0F0F0;
+	margin: 0px;
+	padding: 1em;
+	overflow: auto;
+}
+div.cake-code-dump pre, div.cake-code-dump pre code {
+	clear: both;
+	font-size: 12px;
+	line-height: 15px;
+	margin: 4px 2px;
+	padding: 4px;
+	overflow: auto;
+}
+div.cake-code-dump span.code-highlight {
+	background-color: #ff0;
+	padding: 4px;
+}
+div.code-coverage-results div.code-line {
+	padding-left:5px;
+	display:block;
+	margin-left:10px;
+}
+div.code-coverage-results div.uncovered span.content {
+	background:#ecc;
+}
+div.code-coverage-results div.covered span.content {
+	background:#cec;
+}
+div.code-coverage-results div.ignored span.content {
+	color:#aaa;
+}
+div.code-coverage-results span.line-num {
+	color:#666;
+	display:block;
+	float:left;
+	width:20px;
+	text-align:right;
+	margin-right:5px;
+}
+div.code-coverage-results span.line-num strong {
+	color:#666;
+}
+div.code-coverage-results div.start {
+	border:1px solid #aaa;
+	border-width:1px 1px 0px 1px;
+	margin-top:30px;
+	padding-top:5px;
+}
+div.code-coverage-results div.end {
+	border:1px solid #aaa;
+	border-width:0px 1px 1px 1px;
+	margin-bottom:30px;
+	padding-bottom:5px;
+}
+div.code-coverage-results div.realstart {
+	margin-top:0px;
+}
+div.code-coverage-results p.note {
+	color:#bbb;
+	padding:5px;
+	margin:5px 0 10px;
+	font-size:10px;
+}
+div.code-coverage-results span.result-bad {
+	color: #a00;
+}
+div.code-coverage-results span.result-ok {
+	color: #fa0;
+}
+div.code-coverage-results span.result-good {
+	color: #0a0;
+}
