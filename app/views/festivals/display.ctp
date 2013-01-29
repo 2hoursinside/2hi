@@ -156,9 +156,9 @@
 			
 		// Parse les users attachés à cette édition
 		// Récupére uniquement les users qui y vont et/ou qui y sont allés
+		$users_going = array();
+		$users_went = array();
 		if (!empty($edition['User'])) {
-  		$users_going = array();
-  		$users_went = array();
   		foreach($edition['User'] as $festivalier) {
     		if ($festivalier['EditionsUser']['type'] == 1) {
       		$users_going[] = $festivalier;
