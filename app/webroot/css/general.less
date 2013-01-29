@@ -1,6 +1,6 @@
 @charset "utf-8"; 
 @arial:  Arial, Helvetica, sans-serif; 
-@helveticaNeue:  "HelveticaNeue", Arial, Helvetica, sans-serif; 
+@helveticaNeue:  Helvetica, Arial, sans-serif; 
 @museo:  Museo700, "Trebuchet MS", Arial, Helvetica, sans-serif; 
 
 @dblue: #316777;
@@ -43,7 +43,7 @@
 .tag { background: url(../img/tag.png) repeat-x; }
 .tag_right { background: url(../img/tag_right.png) no-repeat; width: 12px; }
 
-.flag {width: 24px; height:17px;}
+.flag {width: 24px; }
 
 .friend_list { 
   li { 
@@ -120,13 +120,13 @@ ul { list-style-type: none; }
 
 /********************* FESTIVAL ************************/
 #col.festival { 
-  h1 { float: left; }
   h2 { padding: 0 8px 0 0; display:inline; }
   .date {color:@red; font-size:16px;}
-  .tags.left {clear:none; float:left;}
+  .tags.left {clear:none; float:left; }
 }
 
-.ppic.headline {border:3px solid @lblue; float:left; margin-right: 10px; width:100px; height:100px}
+.ppic_festival { float: left;}
+.ppic.headline { border:3px solid @lblue; float:left; margin-right: 10px; width:100px; height:100px}
 
 .tabs { clear: both; padding-top:5px; margin-left:-24px; }
 .ui-tabs-panel {padding:10px 0 0 20px; }
@@ -135,10 +135,8 @@ ul { list-style-type: none; }
   li { display:  inline-block; padding:  0 4px 0 0; }
 }
 
-#col .flag { float: left; }
 #col .tags { clear: both; padding: 4px 0 0 0; }
 
-#cur_fest_flag { padding: 18px 0 0 12px; }
 .bio { font-size: 12px; color: @black; font-family: @arial; padding:  9px 0 0 0; clear: both;
   p { padding-bottom:5px; }
 }
@@ -451,7 +449,7 @@ ul { list-style-type: none; }
   .td-lieu {width:120px; border-left:1px solid #ededed; 
   	p {margin-bottom:3px;}
   }
-  .flag { width:18px; height:12px; padding-right:5px;  float:none}
+  .flag { width:18px; padding-right:5px;  float:none}
   
 }
 

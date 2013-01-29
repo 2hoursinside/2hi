@@ -80,11 +80,18 @@
 <div id="col" class="festival">
 	<?php if ($festival['Festival']['photo_r'] != 'default.jpg')  $displayPic = 'left'; else $displayPic = '';
 	
-	if ($displayPic) echo $this->Html->image('festival/profilepics/thumb.festival.' . $festival['Festival']['photo_r'], array('class' => 'ppic headline')); ?>
+	if ($displayPic) { ?>
+	<div class="ppic_festival">
+	   <?php echo $this->Html->image('festival/profilepics/thumb.festival.' . $festival['Festival']['photo_r'], array('class' => 'ppic headline')); ?>
+  </div>
+  <?php } ?>
 	
-  <h1><?php echo $festival['Festival']['name']; ?></h1>
-  <?php echo $this->Html->image('flags/'. $festival['Country']['locale']. '.png', array('class' => 'flag', 'id' => 'cur_fest_flag', 'height' => '17px', 'width' => '24px'));
+	<div class="festival_title">
+    <h1><?php echo $festival['Festival']['name']; ?>  <?php echo $this->Html->image('flags/'. $festival['Country']['locale']. '.png', array('class' => 'flag', 'id' => 'cur_fest_flag', 'alt' => $festival['Country']['locale'], 'width' => '24px')); ?></h1>
+   
+	</div>
 	
+	<?php
   if (!empty($festival['Genre'])) {
   	echo '<ul class="tags ' . $displayPic . '">';
     foreach($festival['Genre'] as $genre) {
@@ -365,7 +372,7 @@
   
   <div id="festival_infos" class="sidebar_block">
     <h2>informations</h2>
-    <p><?php echo $this->Html->image('flags/' . $festival['Country']['locale'].'.png', array('class' => 'flag', 'height' => '17px', 'width' => '24px'));?> Lieu :
+    <p><?php echo $this->Html->image('flags/' . $festival['Country']['locale'].'.png', array('class' => 'flag', 'width' => '24px', 'height' => '17px'));?> Lieu :
     <?php 
 		if ($festival['Country']['locale'] != 'fre') {
 			echo $festival['Country']['name'];
