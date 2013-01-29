@@ -7,6 +7,27 @@ class EditionsController extends AppController {
   function updateEditionUser($edition_id, $user_id, $field, $value){
     $data['Edition']['id'];
   }
+  
+  function admin_index() {
+		$festivals = $this->Edition->Festival->find('list', array('order' => 'Festival.name ASC'));
+		//$festivals = $this->Festival->find('all', array('conditions' => array('Festival.isFamous' => 1)));
+		$this->set('festivals', $festivals);
+	}
+	
+	function admin_temp() {
+		$festival_id = $this->data['Edition']['festival_id'];
+		$this->redirect(array('controller' => 'editions', 'action' => 'liste', $festival_id));
+	}
+	
+	function admin_liste($festival_id) {		
+		$liste_editions = $this->Edition->find('all', array('conditions' => array('festival_id =' => $festival_id), 'order' => 'Edition.date_start DESC'));
+		
+		$festival = $this->Edition->Festival->findById($festival_id);
+		$this->set('festival', $festival);
+		$this->set('editions', $liste_editions);
+		$this->set('show_id', $festival_id);
+		
+	}
 	
 	function admin_add() {
 		// Si données envoyée en POST
@@ -27,6 +48,23 @@ class EditionsController extends AppController {
 		
 		$festival = $this->Edition->Festival->findById($festival_id);
 		$this->set('festival', $festival);
+	}
+	
+	
+	function admin_edit($id) {
+		$this->Edition->id = $id;
+		
+		$edition = $this->Edition->find('first', array('conditions' => array('Edition.id' => $id), 'contain' => array('Festival')));
+		$this->set('edition', $edition);
+		
+		if (empty($this->data)) {
+			$this->data = $this->Edition->read();
+		} else {
+			if ($this->Edition->save( $this->data )) {
+				$this->Session->setFlash('L\'édition a été modifié.', 'growl');	
+				$this->redirect('/admin/editions/liste/' . $this->data['Edition']['festival_id']); 
+			}
+		}
 	}
   
     

@@ -15,8 +15,11 @@
 		echo $form->input('festival_id', array('type' => 'hidden', 'value' => $festival['Festival']['id']));
 		echo $form->input('date_start', array('label' => 'Date de début :', 'maxYear' => date('Y') + 1));
 		echo $form->input('date_end', array('label' => 'Date de fin :', 'maxYear' => date('Y') + 1));
-    echo $form->input('name', array('label' => 'Nom (facultatif) :<br /><span class="notes">ex : collection d\'été</span>'));
-		echo $form->input('price', array('label' => 'Prix (facultatif) :<br /><span class="notes">prix du pass total (sans camping)</span>'));
+    echo $form->input('price', array('label' => 'Prix :<br /><span class="notes">prix du pass total (sans camping)</span>'));
+		
+		echo '<br /><br />';
+		echo $form->input('spotify_uri', array('label' => 'Playlist Spotify :<br /><span class="notes">clic droit / copier l\'URI Spotify</span>'));
+    echo $form->input('name', array('label' => 'Nom :<br /><span class="notes">ex : collection d\'été</span>'));
 		echo $form->input('date_lineup', array('selected' => '2000-01-01', 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 1, 'label' => 'Date d\'annonce de la lineup :<br /><span class="notes">(laisser la valeur par défaut si aucune date)</span>'));
 		
 		echo $form->end('Valider'); ?>

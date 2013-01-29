@@ -162,11 +162,12 @@
     
     <div class="tabs">
       <ul>
-        <li><a href="#tabs-<?php echo $anneeedition; ?>-1">Lineup</a></li>
-        <?php if (!empty($photos)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-2">Photos</a></li> <?php } ?>
-        <!-- <li><a href="#tabs-<?php echo $anneeedition; ?>-3">Vidéos</a></li> -->
+        <li><a href="#tabs-<?php echo $anneeedition; ?>-lineup">Lineup</a></li>
+        <?php if (!empty($photos)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-photos">Photos</a></li> <?php } ?>
+        <?php if (!empty($edition['Edition']['spotify_uri'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-spotify">Playlist</a></li> <?php } ?>
+        <!-- <li><a href="#tabs-<?php echo $anneeedition; ?>-videos">Vidéos</a></li> -->
       </ul>
-      <div id="tabs-<?php echo $anneeedition; ?>-1">
+      <div id="tabs-<?php echo $anneeedition; ?>-lineup">
       <?php
       if (isset($edition['Day']) && !empty($edition['Day']) && !empty($edition['Day'][0]['Artist'])) {
 				$nbdays = count($edition['Day']);
@@ -314,8 +315,11 @@
 			}
       ?>
       </div>
-      <?php if (!empty($photos)) { ?>
-      <div id="tabs-<?php echo $anneeedition; ?>-2">
+      
+      <?php 
+      // PHOTOS
+      if (!empty($photos)) { ?>
+      <div id="tabs-<?php echo $anneeedition; ?>-photos">
       <?php  
 					echo '<ul class="photos">';
 					foreach ($photos['photo'] as $photo) {
@@ -324,7 +328,16 @@
 					echo '</ul>'; ?>
       </div>
       <?php } ?>
-      <!-- <div id="tabs-<?php echo $anneeedition; ?>-3"> 
+      
+      <?php 
+      // PLAYLIST SPOTIFY
+      if (!empty($edition['Edition']['spotify_uri'])) { ?>
+      <div id="tabs-<?php echo $anneeedition; ?>-spotify">
+        <?php echo '<iframe src="https://embed.spotify.com/?uri=' . $edition['Edition']['spotify_uri'] . '&theme=white" width="600" height="680" frameborder="0" allowtransparency="true"></iframe>'; ?>
+      </div>
+      <?php } ?>
+      
+      <!-- <div id="tabs-<?php echo $anneeedition; ?>-videos"> 
         <p></p>
       </div>
       -->
