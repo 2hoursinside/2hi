@@ -93,7 +93,7 @@ class FestivalsController extends AppController {
 					'contain' => array(
 							'Artist' => array('order' => 'Artist.familiarity DESC'), 
 							'Day' => array('Artist' => array('order' => 'Artist.familiarity DESC')), 
-							'User' => array('conditions' => 'user_id = ' . $this->Auth->user('id'))
+							'User'
 					), 
 					'order' => 'Edition.date_start DESC'
 		));
@@ -101,9 +101,14 @@ class FestivalsController extends AppController {
 		// Photos
 		App::import('Vendor', 'phpflickr/phpflickr');
 		$f = new phpFlickr('896eac422575839cf320ca17d85d4a34', '9a472b222b2a1053', false);
-		$photos = $f->photos_search(array("tags" => $festival['Festival']['name'] . '+2011', 'per_page' => 16));
+		$photos = $f->photos_search(array("tags" => $festival['Festival']['name'] . '+2012', 'per_page' => 16));
     $this->set(compact('photos'));
 		
+		// ils y vont
+		
+		
+		// Festival similaire
+		/*
     $same_festival = $this->Festival->find('first', array(
       'conditions' => array(
         'NOT' => array('Festival.id' => $festival['Festival']['id'])
@@ -134,7 +139,10 @@ class FestivalsController extends AppController {
       }
       $same_festival['Edition'] = $same_festival['Edition'][$last_edition];
     }
+    */
     
+    // Festival proche
+    /*
     $nearest_festival = $this->Festival->find('first', array('conditions' => array('Festival.city_id' => $festival['City']['id'], 'NOT' => array( 'Festival.id' => $festival['Festival']['id']))));
 		
     if (empty($nearest_festival)) {
@@ -164,6 +172,7 @@ class FestivalsController extends AppController {
       }
       $nearest_festival['Edition'] = $nearest_festival['Edition'][$last_edition];
     }
+    */
     
     $fest_affinity = $this->getAffinityByFestival($festival['Festival']['id']);
     $this->set('fest_affinity', $fest_affinity);
@@ -172,8 +181,8 @@ class FestivalsController extends AppController {
 		$this->set('editions', $editions);
 		$this->set('festival', $festival);
 		$this->set('user', $user);
-    $this->set('same_festival', $same_festival);
-    $this->set('nearest_festival', $nearest_festival);
+    //$this->set('same_festival', $same_festival);
+    //$this->set('nearest_festival', $nearest_festival);
 	}
 	
 	function genre($genre_url) {
@@ -195,12 +204,15 @@ class FestivalsController extends AppController {
       'seen' => 0.033
     );
     
-    //on donne l'affinité pour un festival donné
-    if(!empty($id)){
-      //on charge le festival et toutes ses editions
+    // on donne l'affinité pour un festival donné
+    if (!empty($id)){
+    
+      // on choisit la dernière édition
       $current_festival = $this->Festival->find('first', array('conditions' => 'Festival.id = '.$id, 'contain' => array('Edition' => array('order' => 'date_start DESC'))));
+      
       if(!empty($current_festival['Edition'])){
-        //on trouve le nombre d'artistes total pour la derniere edition du festival
+      
+        // on trouve le nombre d'artistes total pour la derniere edition du festival
         $req_all_artists = '
           SELECT COUNT(ae.artist_id) as nb_artists
           FROM `artists_editions` ae 
@@ -211,7 +223,7 @@ class FestivalsController extends AppController {
         $res_all_artists = $this->Festival->query($req_all_artists);
         $nb_total_artists = $res_all_artists[0][0]['nb_artists'];
   
-        //on trouve le nombre d'artistes similaires pour la derniere edition du festival
+        // on trouve le nombre d'artistes similaires pour la derniere edition du festival
         $req_similar_artists = '
           SELECT COUNT(ae.`artist_id`) as nb_similar
           FROM `artists_editions` ae 
@@ -235,7 +247,7 @@ class FestivalsController extends AppController {
         $res_similar_artists = $this->Festival->query($req_similar_artists);
         $nb_similar_artists = $res_similar_artists[0][0]['nb_similar'];      
   
-        //Requete 3 (recuperation des artistes likés présents)
+        // Requete 3 (recuperation des artistes likés présents)
         $req_liked_artists = '
           SELECT COUNT(au.`artist_id`) AS nb_liked
           FROM `artists_editions` ae 
@@ -247,7 +259,7 @@ class FestivalsController extends AppController {
         $res_liked_artists = $this->Festival->query($req_liked_artists);
         $nb_liked_artists = $res_liked_artists[0][0]['nb_liked'];
   
-        //Requete 4 (recuperation des artistes favoris présents)
+        // Requete 4 (recuperation des artistes favoris présents)
         $req_favorite_artists = '
           SELECT COUNT(au.`artist_id`) AS nb_favorite
           FROM `artists_editions` ae 
@@ -260,7 +272,7 @@ class FestivalsController extends AppController {
         $res_favorite_artists = $this->Festival->query($req_favorite_artists);
         $nb_favorite_artists = $res_favorite_artists[0][0]['nb_favorite'];
   
-        //Requete 5 (recupere les festivals que l'utilisateur à déjà vu)
+        // Requete 5 (recupere les festivals que l'utilisateur à déjà vu)
         $req_seen_editions = '
           SELECT COUNT(eu.edition_id) as nb_seen
           FROM editions_users eu
@@ -274,24 +286,24 @@ class FestivalsController extends AppController {
   
         $affinity = 0;
   
-        if((int)($nb_total_artists) > 0)
+        if ((int)($nb_total_artists) > 0)
           $affinity += ((int)($nb_similar_artists) / (int)($nb_total_artists)) * (float)($criteres['similar_artist']);
   
-        if((int)($nb_liked_artists) > 6){
+        if ((int)($nb_liked_artists) > 6) {
           $affinity += 6 * (float)($criteres['liked_artist']);
-        }elseif((int)($nb_liked_artists) > 0){
+        } elseif ((int)($nb_liked_artists) > 0) {
           $affinity += ((int)($nb_liked_artists)) * (float)($criteres['liked_artist']);
         }
   
-        if((int)($nb_favorite_artists) > 3){
+        if ((int)($nb_favorite_artists) > 3) {
           $affinity += 3 * (float)($criteres['favorite_artist']);
-        }elseif((int)($nb_favorite_artists) > 0){
+        } elseif ((int)($nb_favorite_artists) > 0) {
           $affinity += ((int)($nb_favorite_artists)) * (float)($criteres['favorite_artist']);
         }
           
-        if($nb_seen_editions > 3){
+        if ($nb_seen_editions > 3){
           $affinity += 3 * (float)($criteres['seen']);
-        }else{
+        } else {
           $affinity += (int)($nb_seen_editions) * (float)($criteres['seen']);
         }
   
@@ -299,22 +311,24 @@ class FestivalsController extends AppController {
           $affinity = 1;
   
         return $affinity;
-      }else{
+      } else {
         return 0;
       }
 
-    //on donne l'affinité pour tous les festivals  
-    }else{
-      //on charge tous les festivals et leurs editions
+    // on donne l'affinité pour tous les festivals  
+    } else {
+      // on charge tous les festivals et leurs editions
       $current_festival = $this->Festival->find('all', array('contain' => array('Edition' => array('order' => 'date_start DESC'))));
       debug($current_festival); die();
     }
   }
 	
 	function admin_addartists() {		
+	
 	}
 	
 	function admin_addartist($festival_id) {
+	
 		$festival = $this->Festival->findById($festival_id);
 		$this->set('festival', $festival);
 		
@@ -558,8 +572,8 @@ class FestivalsController extends AppController {
 	}
 
   function admin_build_genres($id = null){
-    //on mets a jour le festival donné
-    if(!empty($id)){
+    // si id présent, on met a jour le festival donné
+    if (!empty($id)) {
       $festival = $this->Festival->find('first', array(
         'fields' => array('Festival.*', 'Edition.*'),
         'joins' => array(
@@ -576,26 +590,31 @@ class FestivalsController extends AppController {
         'contain' => false,
         'order' => 'Edition.date_start DESC')
       );
-      if(!empty($festival['Edition'])){
+      
+      if (!empty($festival['Edition'])) {
         App::import('Controller', 'Editions');
         $Edition = new EditionsController;
         $Edition->ConstructClasses();
         $genres = $Edition->getGenreEdition($festival['Edition']['id']);
-        if(!empty($genres)){
+        
+        if (!empty($genres)) {
           foreach($genres as $genre){
             $genre_object = $this->Festival->Genre->find('first', array('conditions' => array('Genre.name LIKE "'.$genre.'"'), 'contain' => false));
             $this->Festival->Genre->habtmAdd('Festival', $genre_object['Genre']['id'], $id);
           }
         }
-      }else{
+      } else {
         $this->Session->setFlash('Aucune editions trouvée.', 'growl', array('type' => 'error'));	
         $this->redirect(array('controller' => 'festivals', 'action' => 'index'));
       }
-    //on met a jour tous les festivals
-    }else{
+      
+    // on met a jour tous les festivals
+    } else {
       $festivals = $this->Festival->find('all', array('contain' => false));
-      if(!empty($festivals)){
+      
+      if (!empty($festivals)) {
         foreach($festivals as $festival){
+        
           $current_festival = $this->Festival->find('first', array(
             'fields' => array('Festival.*', 'Edition.*'),
             'joins' => array(
@@ -612,20 +631,23 @@ class FestivalsController extends AppController {
             'conditions' => array('Festival.id' => $festival['Festival']['id']),
             'order' => 'Edition.date_start DESC'
           ));
-          if(isset($current_festival['Edition']['id'])){
+          
+          if (isset($current_festival['Edition']['id'])) {
+          
             App::import('Controller', 'Editions');
             $Edition = new EditionsController;
             $Edition->ConstructClasses();
             $genres = $Edition->getGenreEdition($current_festival['Edition']['id']);
-            if(!empty($genres)){
-              foreach($genres as $genre){
+            
+            if (!empty($genres)) {
+              foreach($genres as $genre) {
                 $genre_object = $this->Festival->Genre->find('first', array('conditions' => array('Genre.name LIKE "'.$genre.'"'), 'contain' => false));
                 $this->Festival->Genre->habtmAdd('Festival', $genre_object['Genre']['id'], $festival['Festival']['id']);
               }
             }
           }
         }
-      }else{
+      } else {
         $this->Session->setFlash('Aucun festival trouvé.', 'growl', array('type' => 'error'));	
         $this->redirect(array('controller' => 'festivals', 'action' => 'index'));
       }

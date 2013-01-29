@@ -98,7 +98,7 @@
       <div id="footer">
         <?php
         debug($facebook_user);
-        debug($user);
+        //debug($user);
          echo $this->element('sql_dump');
         ?>
       </div>

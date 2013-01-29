@@ -107,9 +107,11 @@
   <div class="bio expandable"><?php echo $festival['Festival']['bio']; ?></div>
   <?php } else { ?>
   <br /><br />
-  <?php } ?>
+  <?php } 
+  
+  //debug($editions);
 
-  <?php 
+
   if (!empty($editions)) { 
   
     // Parse les éditions et les affiche
@@ -151,6 +153,20 @@
 						echo '<li>' . $this->Html->link('Ça m\'intéresse', '#', array('onclick' => 'return false;', 'name' => $edition['Edition']['id'], 'rel' => 'nowant', 'id' => 'nowant'. $edition['Edition']['id'], 'class' => 'button delete add-edition')) . '</li>';
 					}
 			}
+			
+		// Parse les users attachés à cette édition
+		// Récupére uniquement les users qui y vont et/ou qui y sont allés
+		if (!empty($edition['User'])) {
+  		$users_going = array();
+  		$users_went = array();
+  		foreach($edition['User'] as $festivalier) {
+    		if ($festivalier['EditionsUser']['type'] == 1) {
+      		$users_going[] = $festivalier;
+    		} elseif ($festivalier['EditionsUser']['type'] == 3) {
+    		  $users_went[] = $festivalier;
+    		}
+  		}
+		}
     ?>
     </ul>
     <h2>Edition <?php echo $anneeedition; ?></h2>
@@ -170,8 +186,15 @@
     <div class="tabs">
       <ul>
         <li><a href="#tabs-<?php echo $anneeedition; ?>-lineup">Lineup</a></li>
-        <?php if (!empty($photos['photo'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-photos">Photos</a></li> <?php } ?>
-        <?php if (!empty($edition['Edition']['spotify_uri'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-spotify">Playlist</a></li> <?php } ?>
+        <?php // Photos
+        if (!empty($photos['photo'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-photos">Photos</a></li> <?php } ?>
+        <?php // Playlist Spotify
+        if (!empty($edition['Edition']['spotify_uri'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-spotify">Playlist</a></li> <?php } ?>
+        <?php // Festivaliers y sont allés
+        if ($timestamp < time() && !empty($users_went)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-festivaliers">Ils y étaient</a></li> <?php } ?>
+        <?php // Festivaliers y vont
+        if ($timestamp >= time() && !empty($users_going)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-festivaliers">Ils y vont</a></li> <?php } ?>
+
         <!-- <li><a href="#tabs-<?php echo $anneeedition; ?>-videos">Vidéos</a></li> -->
       </ul>
       <div id="tabs-<?php echo $anneeedition; ?>-lineup">
@@ -343,6 +366,43 @@
         <?php echo '<iframe src="https://embed.spotify.com/?uri=' . $edition['Edition']['spotify_uri'] . '&theme=white" width="600" height="680" frameborder="0" allowtransparency="true"></iframe>'; ?>
       </div>
       <?php } ?>
+      
+      <?php 
+      // FESTIVALIERS QUI Y VONT
+      if ($timestamp >= time() && !empty($users_going)) { ?>
+      <div id="tabs-<?php echo $anneeedition; ?>-festivaliers">
+        <div class="festivaliers">
+        <?php 
+        foreach ($users_going as $festivalier) {
+        	if (!empty($festivalier['facebook_id'])) 
+        	   echo $this->Html->link($this->Html->image('http://graph.facebook.com/' . $festivalier['facebook_id'] . '/picture', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
+        	else 
+        	   echo $this->Html->link($this->Html->image('user/profilepics/default.jpg', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
+        }
+        ?>
+        </div>
+        <div class="spacer"></div><br />
+      </div>
+      <?php } ?>
+      
+      <?php 
+      // FESTIVALIERS QUI Y ETAIENT
+      if ($timestamp < time() && !empty($users_went)) { ?>
+      <div id="tabs-<?php echo $anneeedition; ?>-festivaliers">
+        <div class="festivaliers">
+        <?php 
+        foreach ($users_went as $festivalier) {
+        	if (!empty($festivalier['facebook_id'])) 
+        	   echo $this->Html->link($this->Html->image('http://graph.facebook.com/' . $festivalier['facebook_id'] . '/picture', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
+        	else 
+        	   echo $this->Html->link($this->Html->image('user/profilepics/default.jpg', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
+        }
+        ?>
+        </div>
+        <div class="spacer"></div><br />
+      </div>
+      <?php } ?>
+      
       
       <!-- <div id="tabs-<?php echo $anneeedition; ?>-videos"> 
         <p></p>
