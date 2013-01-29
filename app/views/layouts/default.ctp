@@ -1,16 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<?php // echo $this->Facebook->html(); ?>
+<?php echo $this->Facebook->html(); ?>
   <head>
     <?php echo $this->Html->charset(); ?>
     <title>
     <?php echo $title_for_layout; ?><?php __(' - 3 Jours Dehors'); ?></title>
     <?php
     echo $this->Html->meta('icon');
-    echo $this->Html->script(array('jquery-1.7.1.min', 'jquery-ui-1.8.22.custom.min', 'jquery.tipsy', 'general'));
+    echo $this->Html->script(array('jquery-1.7.1.min', 'jquery-ui-1.10.0.custom.min', 'jquery.tipsy', 'general'));
 		
     //TODO: surcharger html->css pour qu'il prenne les .less
     // déplacer tous les js en bas de page?
-    echo $this->Html->css('jquery-ui-1.8.22.custom');
+    echo $this->Html->css('jquery-ui-1.10.0.custom');
     echo $scripts_for_layout;
     ?>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCuNJ62uVRP6hBuk3qbWIOxOPoffdNwlfQ&sensor=false"></script>

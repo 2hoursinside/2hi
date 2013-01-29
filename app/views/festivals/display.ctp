@@ -163,7 +163,7 @@
     <div class="tabs">
       <ul>
         <li><a href="#tabs-<?php echo $anneeedition; ?>-lineup">Lineup</a></li>
-        <?php if (!empty($photos)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-photos">Photos</a></li> <?php } ?>
+        <?php if (!empty($photos['photo'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-photos">Photos</a></li> <?php } ?>
         <?php if (!empty($edition['Edition']['spotify_uri'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-spotify">Playlist</a></li> <?php } ?>
         <!-- <li><a href="#tabs-<?php echo $anneeedition; ?>-videos">Vidéos</a></li> -->
       </ul>
@@ -318,7 +318,7 @@
       
       <?php 
       // PHOTOS
-      if (!empty($photos)) { ?>
+      if (!empty($photos['photo'])) { ?>
       <div id="tabs-<?php echo $anneeedition; ?>-photos">
       <?php  
 					echo '<ul class="photos">';
@@ -424,7 +424,7 @@
       <li><span class="news_date">16/12</span><span class="news_title">Des nouveaux noms pour Rock en Seine 2012</span></li>
     </ul>
   </div>
-  -->
+  
   
   <div id="festival_same" class="sidebar_block">
     <h2>festivals similaires</h2>
@@ -487,4 +487,5 @@
       <p class="location"><?php echo (!empty($nearest_festival['City']['name']))? $nearest_festival['City']['name'].', ' : ''; echo (!empty($nearest_festival['Department']['name']))? $nearest_festival['Department']['name'] : '';?></p>
     </div>
   </div>
+  -->
 </div>
