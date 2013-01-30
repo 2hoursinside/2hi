@@ -4,9 +4,10 @@
     <?php echo $this->Html->charset(); ?>
     <title>
     <?php echo $title_for_layout; ?><?php __(' - 3 Jours Dehors'); ?></title>
-    <?php
-    echo $this->Html->meta('icon');
-    echo $this->Html->script(array('jquery-1.7.1.min', 'jquery-ui-1.10.0.custom.min', 'jquery.tipsy', 'general'));
+    <?php echo $this->Html->meta('icon'); ?>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.0.0.min.js"></script>
+    <?php echo $this->Html->script(array('jquery-ui-1.10.0.custom.min', 'jquery.tipsy', 'general'));
 		
     //TODO: surcharger html->css pour qu'il prenne les .less
     // déplacer tous les js en bas de page?

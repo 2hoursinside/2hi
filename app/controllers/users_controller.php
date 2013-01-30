@@ -989,27 +989,27 @@ class UsersController extends AppController {
         }
       }
       
-      if($affinity > 1)
+      if ($affinity > 1)
         $affinity = 1;
       
       $fields[0]['affinity'] = $affinity;
     }
-//debug($res_editions);
+    //debug($res_editions);
+    
     //tri des festivals
-    if(isset($this->data) AND isset($this->data['User']['sortby']))
+    if (isset($this->data) AND isset($this->data['User']['sortby']))
       $sortby = $this->data['User']['sortby'];
     else
       $sortby = 'affinity';
       
     $sorted_fest = $this->sortRecommandations($res_editions, $sortby);
-    if(!$sorted_fest)
+    if (!$sorted_fest)
       return $res_editions;
     else
       $this->set('recommanded_fest', $sorted_fest);
   }
   
-  function sortRecommandations($res_editions, $sortby)
-  {
+  function sortRecommandations($res_editions, $sortby) {
     function sort_by_affinity($a,$b){
       return $a[0]['affinity']<$b[0]['affinity'];
     }
@@ -1031,8 +1031,7 @@ class UsersController extends AppController {
       return false;
   }
 	
-  function getEditionGenre()
-  {
+  function getEditionGenre() {
     $this->User->Edition->getGenreEdition();
   }
   

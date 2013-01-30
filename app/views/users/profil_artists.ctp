@@ -250,7 +250,7 @@ echo $this->Html->scriptBlock("
 						name: request.term,
 						format: 'jsonp',
 						results: 5,
-						api_key: 'N6E4NIOVYMTHNDM8J'
+						api_key: '7CVRJ3W1SLKTU0LYP'
 					},
 					success: function( data ) {
 						response( $.map( data.response.artists, function( item ) {
