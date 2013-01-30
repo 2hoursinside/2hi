@@ -4,5 +4,6 @@ tmp/*
 app/tmp/*
 app/[Cc]onfig/core.php
 app/[Cc]onfig/database.php
+app/plugins/facebook/config/*
 !empty
 .DS_Store
