@@ -15,7 +15,7 @@
 	echo $form->input('festival_id', array('type'=>'hidden', 'value' => $festival['Festival']['id'])); 
 	echo $form->input('artists', array('label' => 'Artiste(s) :<br /><span class="notes">(separés par des virgules)</span>', 'type' => 'textarea'));
 	
-	echo $form->input('editions', array('label' => 'Edition :'));
+	echo $form->input('edition_id', array('label' => 'Edition :'));
 	echo $form->input('day_id', array('label' => 'Jour :<br /><span class="notes">(facultatif)</span>', 'options' => $days));
   echo $form->end('Ajouter');
 	echo '</fieldset>';

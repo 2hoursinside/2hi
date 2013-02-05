@@ -675,7 +675,7 @@ class UsersController extends AppController {
         ),
       ),
       'group' => 'Edition.id',
-      'conditions' => array('Edition.date_end > NOW()'),
+      'conditions' => array('Edition.date_start > NOW()'),
    ));
    
     //Requete 2 (recuperation des artistes similaires présents)
