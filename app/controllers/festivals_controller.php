@@ -332,9 +332,9 @@ class FestivalsController extends AppController {
 		$festival = $this->Festival->findById($festival_id);
 		$this->set('festival', $festival);
 		
-		$editions = $this->Festival->Edition->find('list', array('conditions' => array('Edition.festival_id' => $festival_id)));
+		$editions = $this->Festival->Edition->find('list', array('conditions' => array('Edition.festival_id' => $festival_id), 'order' => 'Edition.date_start DESC'));
 		
-		$days = $this->Festival->Edition->Day->find('list', array('conditions' => 'Day.edition_id IN (' . implode(",", array_keys($editions)) . ')', 'order' => 'Day.date ASC', 'contain' => false));
+		$days = $this->Festival->Edition->Day->find('list', array('conditions' => 'Day.edition_id IN (' . implode(",", array_keys($editions)) . ')', 'order' => 'Day.date DESC', 'contain' => false));
 		$this->set('editions', $this->Festival->Edition->find('list', array('conditions' => array('Edition.festival_id' => $festival_id))));
 		$this->set('days', $days);	
 		

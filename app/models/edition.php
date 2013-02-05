@@ -7,6 +7,6 @@ class Edition extends AppModel {
   var $hasAndBelongsToMany = array('User', 'Artist');
 	
 	var $displayField = 'date_start';
-	
+	var $order = 'date_start DESC';
 	var $actsAs = array('ExtendAssociations', 'Containable');
 }

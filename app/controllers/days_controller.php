@@ -14,7 +14,7 @@ class DaysController extends AppController {
 	function admin_many($festival_id) {
 		$festival = $this->Day->Edition->Festival->findById($festival_id);
 		
-		$this->set('editions', $this->Day->Edition->find('list', array('conditions' => array('Edition.festival_id' => $festival_id))));
+		$this->set('editions', $this->Day->Edition->find('list', array('conditions' => array('Edition.festival_id' => $festival_id), 'order' => 'Edition.date_start DESC')));
 		$this->set('festival', $festival);
 	}
 	
