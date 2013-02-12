@@ -153,7 +153,6 @@ class UsersController extends AppController {
   	$user_fb_bands = $Facebook->api('/me/music?fields=description,name,picture,category');
  	 	//$user_fb_listens = $Facebook->api('/me/music.listens?fields=id');
 		
-		
 		$user = $this->User->find('first', array(
 			'conditions' => array('User.id' => $this->Auth->user('id')), 
 			'contain' => array('Artist')
@@ -188,6 +187,9 @@ class UsersController extends AppController {
 					
 					// cherche l'artiste avec son nom si pas de fb_id
 					if (empty($artist)) {
+					
+					  $band['name'] = trim(str_replace("(Official)", "", $band['name']));
+					  
 						$artist = $this->User->Artist->find('first', array('conditions' => 'Artist.name LIKE "%' . $band['name'] . '%" OR Artist.other_names LIKE "%' . $band['name'] . '%"', 'contain' => false));
 											
 						// ajoute le fb_id et la relation
@@ -195,7 +197,7 @@ class UsersController extends AppController {
 							$artists_to_like[] = $artist['Artist']['id'];
 							$this->User->Artist->id = $artist['Artist']['id'];
 							$this->User->Artist->saveField('facebook_id', $band['id']);
-							$this->User->Artist->saveField('fb_picture', $band['picture']);
+							$this->User->Artist->saveField('fb_picture', $band['picture']['url']);
 							
 						// ajoute l'artiste à la bdd si non trouvé et le like
 						} else {
@@ -203,7 +205,7 @@ class UsersController extends AppController {
 							$data = array(
 								'name' => $band['name'],
 								'facebook_id' => $band['id'],
-								'fb_picture' => $band['picture'],
+								'fb_picture' => $band['picture']['url'],
 								'url' => formatUrl($band['name'], false),
 								'bio' => array(
 									'fre' => '',
@@ -241,14 +243,14 @@ class UsersController extends AppController {
 	}
 	
 	function importFromLastfm() {
-    //on recupere l'utilisateur et la liste de ses artistes liké
+    // on recupere l'utilisateur et la liste de ses artistes liké
 		$user_id = $this->Auth->user('id');
     $user = $this->User->find('first', array(
 			'conditions' => array('User.id' => $this->Auth->user('id')), 
 			'contain' => array('Artist')
 		));
 
-    //on interoge les 100 premiers artistes du compte lastfm de l'utilisateur
+    // on interoge les 100 premiers artistes du compte lastfm de l'utilisateur
     $user_lastfm = $user['User']['lastfm'];
     $user_lastfm_artists = $this->Lastfm->get('library.getArtists', array('user' => $user_lastfm, 'limit' => 100, 'api_key' => '397f769265e2296c99cd685300d1c775'), false, false);
     $user_lastfm_artists = $user_lastfm_artists['artists'];
@@ -258,19 +260,19 @@ class UsersController extends AppController {
 		$artists_to_like = array();
     $artists_to_favorite = array();
 		$artists_ids = array();
-		$artists_allreadyliked_names = array();
-    $artists_allreadyfavorite_ids = array();
+		$artists_alreadyliked_names = array();
+    $artists_alreadyfavorite_ids = array();
     
-    //on rempli un tableau avec les noms des artistes deja liké et un avec les id des artistes deja favoris
+    // on remplit un tableau avec les noms des artistes deja liké et un avec les id des artistes deja favoris
     if (!empty($user['Artist'])) {
 			foreach($user['Artist'] as $tmp_artist) {
 				$artists_ids[] = $tmp_artist['id'];
-				if (!empty($tmp_artist['name'])) $artists_allreadyliked_names[] = $tmp_artist['name'];
-        if ($tmp_artist['ArtistsUser']['favorite'] == 1) $artists_allreadyfavorite_ids[] = $tmp_artist['id'];
+				if (!empty($tmp_artist['name'])) $artists_alreadyliked_names[] = $tmp_artist['name'];
+        if ($tmp_artist['ArtistsUser']['favorite'] == 1) $artists_alreadyfavorite_ids[] = $tmp_artist['id'];
 			}
 		}
 
-    //s'il y a des artistes dans la liste lastfm
+    // s'il y a des artistes dans la liste lastfm
 		if (isset($user_lastfm_artists['artist'])) {
 		  $nb_favorite = 0;
 			foreach($user_lastfm_artists['artist'] as $band) {
@@ -278,7 +280,7 @@ class UsersController extends AppController {
         $artist = $this->User->Artist->find('first', array('conditions' => 'Artist.name LIKE "%' . $band['name'] . '%" OR Artist.other_names LIKE "%' . $band['name'] . '%"', 'contain' => false));
 					
 				// si l'utilisateur ne like pas encore l'artiste sur 3JD
-				if(!in_array($band['name'], $artists_allreadyliked_names)) {
+				if(!in_array($band['name'], $artists_alreadyliked_names)) {
 								
 						// s'il n'existe pas, on l'ajoute à la bdd
 						if (empty($artist)) {							
@@ -286,7 +288,7 @@ class UsersController extends AppController {
 								'name' => $band['name'],
 								'url' => formatUrl($band['name'], false),
                 //'fb_picture' => preg_replace('/64\/([0-9]*)\.jpg/', '50/$1.jpg', $band['image'][1]['#text']),
-                'fb_picture' => preg_replace($band['image'][1]['#text']),
+                'fb_picture' => $band['image'][1]['#text'],
 								'bio' => array(
 									'fre' => '',
 									'eng' => ''
@@ -298,10 +300,11 @@ class UsersController extends AppController {
 							$last_id = $Artists->createFromLastfm($data);
               //on l'ajoute à la liste des artistes à liker
 							$artists_to_like[] = $last_id;
-						}else{
-						  //s'il existe deja, on se contente de l'ajouter à la liste d'artiste à liker
+							
+						} else {
+						  // s'il existe deja, on se contente de l'ajouter à la liste d'artiste à liker
 						  $artists_to_like[] = $artist['Artist']['id'];
-              //et d'ajouter son image
+              // et d'ajouter son image
               if(empty($artist['Artist']['fb_picture'])){
                 $this->User->Artist->id = $artist['Artist']['id'];
                 //$this->User->Artist->saveField('fb_picture', preg_replace('/64\/([0-9]*)\.jpg/', '50/$1.jpg', $band['image'][1]['#text']));
@@ -312,14 +315,15 @@ class UsersController extends AppController {
             $nb_favorite ++;
             $artists_to_favorite[] = $artist['Artist']['id'];
           }
-				}else{
-				  //s'il le like déjà, on se contente de l'ajouter à la liste de favoris
-          if($nb_favorite < 15){
+          
+				} else {
+				  // s'il le like déjà, on se contente de l'ajouter à la liste de favoris
+          if ($nb_favorite < 15){
             $nb_favorite ++;
             $artists_to_favorite[] = $artist['Artist']['id'];
           }
-          //et d'ajouter son image
-          if(empty($artist['Artist']['fb_picture'])){
+          // et d'ajouter son image
+          if (empty($artist['Artist']['fb_picture'])){
             $this->User->Artist->id = $artist['Artist']['id'];
             //$this->User->Artist->saveField('fb_picture', preg_replace('/64\/([0-9]*)\.jpg/', '50/$1.jpg', $band['image'][1]['#text']));
             $this->User->Artist->saveField('fb_picture', $band['image'][1]['#text']);
@@ -327,16 +331,18 @@ class UsersController extends AppController {
 				}
 			}
 		}
+		
 		// ajoute les artistes à liker à l'user
 		if (!empty($artists_to_like)) {
 			foreach($artists_to_like as $artist) {
         $artistuser = $this->User->ArtistsUser->find('first', array('conditions' => array('artist_id = '.$artist, 'user_id = '.$user_id)));
-        if(empty($artistuser))
+        if (empty($artistuser))
 				  $this->User->Artist->habtmAdd('User', $artist, $user['User']['id']);
 			}	
 		}
-    //on ajoute les favoris
-    if(empty($artists_allreadyfavorite_ids) AND !empty($artists_to_favorite)){
+		
+    // on ajoute les favoris
+    if (empty($artists_alreadyfavorite_ids) && !empty($artists_to_favorite)){
       foreach($artists_to_favorite as $artist) {
         $artistuser = $this->User->ArtistsUser->find('first', array('conditions' => array('artist_id = '.$artist, 'user_id = '.$user_id)));
 				$this->User->ArtistsUser->id = $artistuser['ArtistsUser']['id'];
@@ -675,7 +681,7 @@ class UsersController extends AppController {
         ),
       ),
       'group' => 'Edition.id',
-      'conditions' => array('Edition.date_start > NOW()'),
+      'conditions' => array('Edition.date_end > NOW()'),
    ));
    
     //Requete 2 (recuperation des artistes similaires présents)

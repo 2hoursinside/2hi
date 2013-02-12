@@ -9,7 +9,7 @@ $this->set('title_for_layout', 'Bienvenue');
 <div id="col" class="home">
 	<h1>Bienvenue</h1>
 	<br />
-  Bienvenue cher beta testeur. <br /><br />
+  Bienvenue <?php echo $user['User']['first_name']; ?>. <br /><br />
   
   Nous avons créé 3 Jours Dehors dans le but de faciliter la découverte et la recherche de festivals sans avoir à parcourir les centaines de sites officiels des festivals. <br /><br />
   Si le site est en beta, c'est parce qu'il n'est pas vraiment terminé, et très largement améliorable. Il manque encore des fonctionnalités essentielles au site, il nous manque des programmations, des festivals, et surtout il nous manque vos retours ! <br /><br />
@@ -21,7 +21,6 @@ $this->set('title_for_layout', 'Bienvenue');
   Bonne traque,<br /><br />
   
   <span class="grey">
-  Cyril, Gaëtan, Guillaume, Loïc, Lucas et Ludovic<br />
   L'équipe 3 Jours Dehors
   </span>
   <br /><br /><br />
