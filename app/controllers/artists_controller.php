@@ -184,12 +184,12 @@ class ArtistsController extends AppController {
       die();
 */
 
-      //on test si aucun genre n'a été enregistré pour cet artiste
-      if(empty($artist['Genre'])){
+      // on test si aucun genre n'a été enregistré pour cet artiste
+      if (empty($artist['Genre'])){
         App::import('Core', 'HttpSocket');
   	    $HttpSocket = new HttpSocket();
         $artist_genres = json_decode($HttpSocket->get('http://developer.echonest.com/api/v4/artist/profile?api_key=7CVRJ3W1SLKTU0LYP&name='.$artist['Artist']['name'].'&bucket=terms')); 
-        if($artist_genres->response->status->code === 0){
+        if ($artist_genres->response->status->code === 0){
   				$artist_genres = $artist_genres->response->artist; 
   				$genres = $this->createAndLinkGenres($artist_genres->terms, $artist['Artist']['id']);
   				if (!empty($genres)) $artist['Genre'] = $genres;
@@ -197,7 +197,7 @@ class ArtistsController extends AppController {
       }
       
       return $artist['Genre'];
-    }else{
+    } else {
       $this->Session->setFlash('Aucun artiste trouvé.', 'growl', array('type' => 'error'));	
 			$this->redirect(array('controller' => 'artists', 'action' => 'index'));
     }
@@ -210,7 +210,7 @@ class ArtistsController extends AppController {
         App::import('Core', 'HttpSocket');
   	    $HttpSocket = new HttpSocket();
         $artist_genres = json_decode($HttpSocket->get('http://developer.echonest.com/api/v4/artist/profile?api_key=7CVRJ3W1SLKTU0LYP&name='.$artist['Artist']['name'].'&bucket=terms')); 
-        if($artist_genres->response->status->code === 0){
+        if ($artist_genres->response->status->code === 0){
   				$artist_genres = $artist_genres->response->artist; 
   				$genres = $this->createAndLinkGenres($artist_genres->terms, $artist['Artist']['id']);
   				if (!empty($genres)) $artist['Genre'] = $genres;
