@@ -57,7 +57,7 @@
 		else
 			$url = htmlentities($name, ENT_NOQUOTES, 'utf-8');
 			
-		$chars = array('/', '?', '!', ',', ')', '(');
+		$chars = array('/', '?', '!', ',', ')', '(', "'");
 		$url = str_replace($chars, '', $url);
 		$url = preg_replace('#\&([A-za-z])(?:acute|cedil|circ|grave|ring|tilde|uml|amp)\;#', '\1', $url);
 		$url = preg_replace('#\&([A-za-z]{2})(?:lig)\;#', '\1', $url); // pour les ligatures e.g. '&oelig;'
