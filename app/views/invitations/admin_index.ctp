@@ -15,10 +15,10 @@
 <table class="data">
 	<tr>
   		<th width="35">Nb</td>
-    	<th width="35%">Email</td>
+    	<th width="30%">Email</td>
       <th>Code</td>
-      <th width="13%">Créé le</td>
-      <th width="35">Sent</td>
+      <th width="18%">Créé le</td>
+      <th width="35">Send</td>
       <th width="35">Edit</td>
       <th width="35">Supr</td>
 	</tr>
@@ -33,7 +33,11 @@
         	$timestamp = strtotime($invitation['Invitation']['created']);
 					e(strftime("%d %B %Y", $timestamp));
 		?></td>
-        <td><?php if ($invitation['Invitation']['sent'] == 1) echo 'x'; ?></td>
+        <td><?php 
+          if (!empty($invitation['Invitation']['email']))
+            echo $this->Html->link($this->Html->image('icons/publie_' . $invitation['Invitation']['sent']  . '.png'), '/admin/invitations/send/'.  $invitation['Invitation']['id'], array('escape' => false, 'title' => 'Envoyer le mail d\'invitation'));	
+            ?>
+        </td>
         <td><?php echo $html->link($html->image('icons/edit.png'), array('controller' => 'invitations', 'action' => 'edit', 'prefix' => 'admin', $invitation['Invitation']['id']), array('escape' => false, 'title' => 'Modifier l\'invitation')); ?>
         </td>
         <td><?php
