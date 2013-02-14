@@ -12,11 +12,8 @@
 class LastfmComponent extends Object {
 
 	private $apiurl = 'http://ws.audioscrobbler.com/2.0/';
-
 	private $authurl = 'http://www.last.fm/api/auth/';
-
 	private $apikey = null;
-
 	private $apisecret = null;
 
   function initialize(&$controller) {
