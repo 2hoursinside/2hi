@@ -4,7 +4,7 @@ class Festival extends AppModel {
 	var $name = 'Festival';
 	var $belongsTo = array('Country', 'Region', 'Department', 'City');
 	var $hasAndBelongsToMany = array('Genre');
-	var $hasMany = array('Edition');
+	var $hasMany = array('Edition', 'Post');
 		
 	var $validate = array(
 		'name' => array(

@@ -7,10 +7,8 @@ $this->set('title_for_layout', 'Bienvenue');
 </div>
 
 <div id="col" class="home">
-	<h1>Bienvenue</h1>
+	<h1>Bienvenue,</h1>
 	<br />
-  Bienvenue <?php echo $user['User']['first_name']; ?>. <br /><br />
-  
   Nous avons créé 3 Jours Dehors dans le but de faciliter la découverte et la recherche de festivals sans avoir à parcourir les centaines de sites officiels des festivals. <br /><br />
   Si le site est en beta, c'est parce qu'il n'est pas vraiment terminé, et très largement améliorable. Il manque encore des fonctionnalités essentielles au site, il nous manque des programmations, des festivals, et surtout il nous manque vos retours ! <br /><br />
   

@@ -41,7 +41,7 @@
               <ul class="menu">
               	<li><?php echo $this->Html->link('Festivals', '#', array('class' => 'tooltip', 'original-title' => 'Veuillez utiliser la recherche <br />pour le moment.')); ?></li>
                 <li><?php echo $this->Html->link('Artistes', '#', array('class' => 'tooltip', 'original-title' => 'Veuillez utiliser la recherche<br />pour le moment.')); ?></li>
-                <li><?php echo $this->Html->link('Actualités', 'http://3joursdehors.tumblr.com/', array()); ?></li>
+                <li><?php echo $this->Html->link('Actualités', '/actualite', array()); ?></li>
               </ul>
             </div>
             <div id="logo"><?php echo $this->Html->link('', '/', array('escape' => false)); ?></div>
@@ -64,7 +64,7 @@
                   <ul>
                   	<li><?php echo $this->Html->link('Mon profil', '/profil/' . $session->read('Auth.User.login')); ?></li>
                     <li><?php echo $this->Html->link('Mes artistes', '/profil/' . $session->read('Auth.User.login') . '/artists'); ?></li>
-                    <li><?php echo $this->Html->link('Mes concerts', '/profil/' . $session->read('Auth.User.login') . '/concerts'); ?></li>
+                    <!--<li><?php echo $this->Html->link('Mes concerts', '/profil/' . $session->read('Auth.User.login') . '/concerts'); ?></li>-->
                     <li><?php echo $this->Html->link('Paramètres', '/profil/' . $session->read('Auth.User.login') . '/parametres'); ?></li>
                     <br />
 										<?php 

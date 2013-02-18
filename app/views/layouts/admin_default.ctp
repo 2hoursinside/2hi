@@ -58,13 +58,13 @@
             </div>
             <div id="menu">
                 <ul>
-                	
                     <?php if ($admin) { ?>
                      <li><?php echo $html->link($html->image('menu/accueil.png', array('class' => 'absmiddle')) . ' &nbsp;Festivals', '/admin/festivals', array('escape' => false)); ?></a></li>
                      <li><?php echo $html->link($html->image('menu/pages.png', array('class' => 'absmiddle')) . ' &nbsp;Editions', '/admin/editions', array('escape' => false)); ?></a></li>
+                     <li><?php echo $html->link($html->image('icons/rss.png', array('class' => 'absmiddle')) . ' &nbsp;News', '/admin/posts', array('escape' => false)); ?></a></li>
                      <li><?php echo $html->link($html->image('icons/music.png', array('class' => 'absmiddle')) . ' &nbsp;Artistes', '/admin/artists', array('escape' => false)); ?></a></li>
                      <li><?php echo $html->link($html->image('menu/categories.png', array('class' => 'absmiddle')) . ' &nbsp;Genres', '/admin/genres', array('escape' => false)); ?></a></li>
-                     <li><?php echo $html->link($html->image('menu/pages.png', array('class' => 'absmiddle')) . ' &nbsp;Régions', '/admin/regions', array('escape' => false)); ?></a></li>
+                     <!--<li><?php echo $html->link($html->image('menu/pages.png', array('class' => 'absmiddle')) . ' &nbsp;Régions', '/admin/regions', array('escape' => false)); ?></a></li>-->
                      <li><?php echo $html->link($html->image('menu/pages.png', array('class' => 'absmiddle')) . ' &nbsp;Pays', '/admin/countries', array('escape' => false)); ?></a></li>
                      <li><?php echo $html->link($html->image('menu/users.png', array('class' => 'absmiddle')) . ' &nbsp;Users', '/admin/users', array('escape' => false)); ?></a></li>
                      <li><?php echo $html->link($html->image('menu/categories.png', array('class' => 'absmiddle')) . ' &nbsp;Invit', '/admin/invitations', array('escape' => false)); ?></a></li>

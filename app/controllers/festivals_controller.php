@@ -377,9 +377,28 @@ class FestivalsController extends AppController {
 			}
 			
 			if ($result) {
-				$this->Session->setFlash('Les artistes ont été ajoutés.');	
+			
+			  // création d'une news
+			  $this->Festival->Post->create();
+			  $post_name = count($artists_id) . ' nouveaux artistes pour le festival ' . $festival['Festival']['name'];
+			  
+        $this->Festival->Post->set(array(
+    			'name' => $post_name,
+    			'url' => formatUrl($post_name, false),
+    			'text' => '',
+    			'festival_id' => $festival_id,
+    			'published' => 0,
+    			'source' => 0
+    		));
+    		
+    		$this->Festival->Post->save();
+    		$post_id = $this->Festival->Post->getLastInsertID();
+    		
+    		// crée les relations entre les artistes et la news
+    		$this->Festival->Post->habtmAdd('Artist', $post_id, $artists_id);	
+			
+				$this->Session->setFlash('Artistes ajoutés, news créée.');	
 				$this->redirect('/admin/festivals/addartist/' . $this->data['Festival']['festival_id']);
-				//$this->redirect(array('controller' => 'festivals', 'action' => 'addartist', $this->data['Festival']['id'])); 
 			}
 
 		}
