@@ -484,6 +484,19 @@
     </ul>
   </div>
   
+  <?php
+  /// SPOTIFY
+  if (!empty($editions[0]['Edition']['spotify_uri'])) { 
+    $timestamp = strtotime($editions[0]['Edition']['date_end']);
+    $anneeedition = strftime("%Y", $timestamp);
+    ?>
+    <div id="festival_infos" class="sidebar_block">
+    <h2>playlist <?php echo $anneeedition; ?></h2> <?php 
+    echo '<iframe src="https://embed.spotify.com/?uri=' . $editions[0]['Edition']['spotify_uri'] . '&theme=white" width="260" height="340" frameborder="0" allowtransparency="true"></iframe>'; 
+  } ?>
+  
+    
+  
   <!-- 
   <div id="festival_news" class="sidebar_block">
     <h2>Actualités</h2>
