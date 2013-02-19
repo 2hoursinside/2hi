@@ -44,7 +44,7 @@
 	if (!empty($user['Artist'])) { ?>
 		<ul class="artists-list">
       <?php
-      foreach($user['Artist'] as $artist) {
+      foreach($user['Artist'] as $u => $artist) {
 				if ($artist['ArtistsUser']['favorite'] == 1) {
 					echo '<li><span>';
 					if (!empty($artist['fb_picture']))

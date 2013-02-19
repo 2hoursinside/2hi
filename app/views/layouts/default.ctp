@@ -39,7 +39,7 @@
           <div id="middle">
             <div id="nav_left">
               <ul class="menu">
-              	<li><?php echo $this->Html->link('Festivals', '#', array('class' => 'tooltip', 'original-title' => 'Veuillez utiliser la recherche <br />pour le moment.')); ?></li>
+              	<li><?php echo $this->Html->link('Festivals', '/'); ?></li>
                 <li><?php echo $this->Html->link('Artistes', '#', array('class' => 'tooltip', 'original-title' => 'Veuillez utiliser la recherche<br />pour le moment.')); ?></li>
                 <li><?php echo $this->Html->link('Actualités', '/actualite', array()); ?></li>
               </ul>

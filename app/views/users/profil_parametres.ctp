@@ -27,7 +27,7 @@
 	
 	echo '<fieldset class="infossocial"><legend>Réseaux sociaux</legend>';
 	echo $this->Form->input('twitter', array('label' => $this->Html->image('icons/twitter.png', array('class' => 'absmiddle')) . ' Twitter :<span class="notes">ex: 3joursdehors</span>'));
-	echo $this->Form->input('lastfm', array('label' => $this->Html->image('icons/lastfm.png', array('class' => 'absmiddle')) . ' Last Fm :<span class="notes">ex: 3joursdehors</span>'));
+	echo $this->Form->input('lastfm', array('label' => $this->Html->image('icons/lastfm.png', array('class' => 'absmiddle')) . ' Last Fm :<span class="notes">ex: 3joursdehors</span>', 'after' => $this->Html->link('&raquo; Importer mes artistes', '/users/importFromLastfm', array('escape' => false, 'class' => 'tooltip', 'original-title' => 'Patientez pendant l\'importation.'))));
 	echo $this->Form->input('soundcloud', array('label' => $this->Html->image('icons/soundcloud.png', array('class' => 'absmiddle')) . ' Soundcloud :<span class="notes">ex: 3joursdehors</span>'));
 	echo $this->Form->input('hypem', array('label' => $this->Html->image('icons/hypem.png', array('class' => 'absmiddle')) . ' Hype Machine :<span class="notes">ex: 3joursdehors</span>'));
 	echo '</fieldset><br />';

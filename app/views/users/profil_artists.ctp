@@ -329,7 +329,7 @@ echo $this->Html->scriptBlock("
 		if (empty($facebook_user))
 			echo $this->Facebook->login(array('perms' => 'user_likes'));
 		else 
-			echo $this->Html->link('&raquo; Importer', '/users/importFromFb', array('escape' => false));
+			echo $this->Html->link('&raquo; Importer', '/users/importFromFb', array('escape' => false, 'class' => 'tooltip', 'original-title' => 'Patientez pendant l\'importation.'));
 		?>
     </div><br />
     <label for="importLastfm"><?php echo $this->Html->image('icons/lastfm.png', array('class' => 'absmiddle')); ?> &nbsp;Avec Last Fm</label><div id="importLastfm">
@@ -337,7 +337,7 @@ echo $this->Html->scriptBlock("
     if (empty($user['User']['lastfm']))
 			echo $this->Html->link('&raquo; Veuillez indiquer votre compte.', '/profil/' . $user['User']['login'] . '/parametres', array('escape' => false));
 		else
-			echo $this->Html->link('&raquo; Importer', '/users/importFromLastfm', array('escape' => false));
+			echo $this->Html->link('&raquo; Importer', '/users/importFromLastfm', array('escape' => false, 'class' => 'tooltip', 'original-title' => 'Patientez pendant l\'importation.'));
     ?>
     </div>
     <br /><br /><br /><br />
