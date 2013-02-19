@@ -161,4 +161,22 @@ echo $this->Html->scriptBlock("
     }
     ?>
   </div>
+  
+  <div id="submit-festival" class="sidebar_block">
+		<h2>proposer</h2>
+		<p>Un festival que vous connaissez n'apparaît pas ici ? Proposez le nous !</p><br />
+		<?php
+    echo $this->Form->create('Submission', array('action' => 'add'));   	
+  	echo $this->Form->input('name', array('label' => '*Nom du festival :'));
+    echo $this->Form->input('source', array('label' => '*Lien vers le site :'));
+    echo $this->Form->input('comment', array('label' => 'Commentaires :'));
+  	echo $this->Form->input('user_id', array('type' => 'hidden', 'value' => $session->read('Auth.User.id')));
+  	
+  	echo '<label for="BtnSave">&nbsp;</label><button type="submit" class="button save" id="BtnSave">Envoyer</button>';
+  	echo $this->Form->end();
+  	echo '</fieldset>';
+  	?>
+    <br /><br />
+  </div>
+  
 </div>

@@ -5,6 +5,8 @@ class User extends AppModel {
 	var $actsAs = array('ExtendAssociations'); 
 	var $hasAndBelongsToMany = array('Artist', 'Edition');
   var $belongsTo = array('City', 'Invitation');
+  var $hasMany = array('Submission');
+  var $displayField = 'login';
   
 	//TODO: ajouter les bonnes expression régulière pour chaque champs.	
 	var $validate = array(

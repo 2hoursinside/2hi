@@ -50,7 +50,7 @@
 /**
  * Administration
  */	
-	Router::connect('/admin', array('controller' => 'users', 'action' => 'menu', 'prefix' => 'admin' ));
+	Router::connect('/admin', array('controller' => 'submissions', 'action' => 'index', 'prefix' => 'admin' ));
 	
 /**
  * ...and connect the rest of 'Pages' controller's urls.

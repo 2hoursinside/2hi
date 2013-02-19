@@ -73,7 +73,7 @@
                     } else {
                       echo '<li>' . $this->Html->link('Déconnexion', '/users/logout'). '</li>';
                     } ?>
-                    <?php if ($user['User']['role'] === 'admin') echo '<li>' . $this->Html->link('Admin', '/admin/users/menu') . '</li>'; ?>
+                    <?php if ($user['User']['role'] === 'admin') echo '<li>' . $this->Html->link('Admin', '/admin/submissions/index') . '</li>'; ?>
                 </div>
               <?php
               } else {
