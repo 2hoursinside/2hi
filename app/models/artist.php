@@ -2,6 +2,7 @@
 class Artist extends AppModel {
 	
 	var $name = 'Artist';
+	var $hasMany = array('Liveset');
 	var $hasAndBelongsToMany = array('Genre', 'Edition', 'Day', 'User', 'Post');
 	var $belongsTo = array('Country');
 	

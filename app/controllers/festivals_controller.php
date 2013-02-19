@@ -93,7 +93,8 @@ class FestivalsController extends AppController {
 					'contain' => array(
 							'Artist' => array('order' => 'Artist.familiarity DESC'), 
 							'Day' => array('Artist' => array('order' => 'Artist.familiarity DESC')), 
-							'User'
+							'User',
+							'Liveset'
 					), 
 					'order' => 'Edition.date_start DESC'
 		));

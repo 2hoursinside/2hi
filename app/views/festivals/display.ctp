@@ -66,10 +66,13 @@
 	if (!empty($festival['Festival']['bio'])) echo $this->Html->meta('description', $festival['Festival']['bio'], array('type' => 'description', 'inline' => false));
 ?>
 
-<script type="text/javascript">
-  
-	
-</script>
+<?php 
+// load soundcloud library
+// TODO: load only when necessary
+require_once 'vendors/soundcloud/Services/Soundcloud.php'; 
+$client = new Services_Soundcloud('dba5449f0e7f56e0bd028fb2e0ed9f74', '128605c31ae634d911e5267635f42540');
+$client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
+?>
 
 <?php if(!empty($festival['Festival']['photo_c'])) { ?>
 <div class="photo-c">
@@ -186,13 +189,16 @@
     <div class="tabs">
       <ul>
         <li><a href="#tabs-<?php echo $anneeedition; ?>-lineup">Lineup</a></li>
-        <?php // Photos
-        if (!empty($photos['photo'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-photos">Photos</a></li> <?php } ?>
-        <?php // Playlist Spotify
-        if (!empty($edition['Edition']['spotify_uri'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-spotify">Playlist</a></li> <?php } ?>
-        <?php // Festivaliers y sont allés
-        if ($timestamp < time() && !empty($users_went)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-festivaliers">Ils y étaient</a></li> <?php } ?>
-        <?php // Festivaliers y vont
+        <?php 
+        // Photos
+        if (!empty($photos['photo'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-photos">Photos</a></li> <?php } 
+        // Livesets
+        if (!empty($edition['Liveset'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-sets">Sets</a></li> <?php }
+        // Playlist Spotify
+        if (!empty($edition['Edition']['spotify_uri'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-spotify">Playlist</a></li> <?php }
+        // Festivaliers y sont allés
+        if ($timestamp < time() && !empty($users_went)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-festivaliers">Ils y étaient</a></li> <?php }
+        // Festivaliers y vont
         if ($timestamp >= time() && !empty($users_going)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-festivaliers">Ils y vont</a></li> <?php } ?>
 
         <!-- <li><a href="#tabs-<?php echo $anneeedition; ?>-videos">Vidéos</a></li> -->
@@ -356,6 +362,19 @@
 						echo '<li>' . $this->Html->link($this->Html->image('http://farm'.$photo['farm'].'.static.flickr.com/'.$photo['server'].'/'.$photo['id'].'_'.$photo['secret'].'_s.jpg'), 'http://farm'.$photo['farm'].'.static.flickr.com/'.$photo['server'].'/'.$photo['id'].'_'.$photo['secret'].'_b.jpg', array('rel' => 'photos', 'escape' => false)) . '</li>';
 					}
 					echo '</ul>'; ?>
+      </div>
+      <?php } ?>
+      
+      <?php 
+      // PLAYLIST SPOTIFY
+      if (!empty($edition['Liveset'])) { ?>
+      <div id="tabs-<?php echo $anneeedition; ?>-sets">
+        <?php 
+        foreach($edition['Liveset'] as $liveset) {
+          $embed_info = json_decode($client->get('oembed', array('url' => $liveset['url'])));
+          print $embed_info->html;
+        }
+         ?>
       </div>
       <?php } ?>
       
