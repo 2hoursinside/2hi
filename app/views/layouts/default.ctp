@@ -39,12 +39,18 @@
           <div id="middle">
             <div id="nav_left">
               <ul class="menu">
-              	<li><?php echo $this->Html->link('Festivals', '/'); ?></li>
+              	<li><?php echo $this->Html->link('Festivals', '/'); ?>
+                </li>
                 <li><?php echo $this->Html->link('Artistes', '#', array('class' => 'tooltip', 'original-title' => 'Veuillez utiliser la recherche<br />pour le moment.')); ?></li>
                 <li><?php echo $this->Html->link('Actualités', '/actualite', array()); ?></li>
               </ul>
             </div>
-            <div id="logo"><?php echo $this->Html->link('', '/', array('escape' => false)); ?></div>
+            <div id="logo"><?php echo $this->Html->link('', '/', array('escape' => false));
+            /*
+            if (empty($user['Artist']))  
+              echo $this->Html->link('', '/profil/' . $session->read('Auth.User.login') . '/artists', array('escape' => false));
+            else
+              echo $this->Html->link('', '/', array('escape' => false)); */ ?></div>
             <div id="nav_right">
             	<?php echo $form->create('Search', array('id' => 'search_form', 'url' => array(
 								'plugin' => 'search', 

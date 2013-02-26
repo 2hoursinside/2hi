@@ -112,7 +112,7 @@ class UsersController extends AppController {
 					$result = $this->User->save($this->data);
 					if ($result) { 
 						$this->Auth->login($this->data);
-						$this->redirect('/');
+						$this->redirect('/profil/' . $this->data['User']['login'] . '/artists');
 					}
 					
 				}

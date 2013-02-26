@@ -314,7 +314,7 @@ echo $this->Html->scriptBlock("
 
 <div id="col" class="profil-artists">
 	<h1><?php echo $this->Html->link($user['User']['login'], '/profil/' . $user['User']['login']); ?> &raquo; artistes</h1>
-  <p>Editer vos artistes et choisissez vos favoris.</p><br /><br />
+  <p>Ajouter les artistes que vous souhaiteriez voir en festivals. Plus vous en ajoutez, plus notre recommandation sera précise.</p><br /><br />
   
 	<table width="100%">
   <tr>
