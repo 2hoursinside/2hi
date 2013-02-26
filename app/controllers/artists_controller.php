@@ -30,7 +30,64 @@ class ArtistsController extends AppController {
 	
 	function index() {
 		$this->layout = 'default';
-		$this->set('artists', $this->Artist->find('all', array('contain' => false, 'order' => 'Artist.name ASC')));
+		
+		// artistes qui tournent
+		$this->Artist->bindModel(array(
+    'hasOne' => array(
+        'ArtistsEdition',
+        'FilterEdition' => array(
+            'className' => 'Edition',
+            'foreignKey' => false,
+            'conditions' => array('FilterEdition.id = ArtistsEdition.edition_id')
+    ))));
+		
+    $artists_mainstream = $this->Artist->find('all', array(
+            'fields' => array('Artist.*, COUNT(Artist.id) as nbeditions'),
+            'conditions' => array('YEAR(FilterEdition.date_start) = 2013'), 
+            'limit' => 20,
+            'order' => 'nbeditions DESC',
+            'group' => 'Artist.name'
+    ));
+    
+    $this->Artist->bindModel(array(
+    'hasOne' => array(
+        'ArtistsEdition',
+        'FilterEdition' => array(
+            'className' => 'Edition',
+            'foreignKey' => false,
+            'conditions' => array('FilterEdition.id = ArtistsEdition.edition_id')
+    ))));
+    
+    $artists_superstars = $this->Artist->find('all', array(
+            'fields' => array('Artist.*, COUNT(Artist.id) as nbeditions'),
+            'conditions' => array('YEAR(FilterEdition.date_start) = 2013 AND Artist.familiarity > 0.85'), 
+            'limit' => 20,
+            'order' => 'nbeditions DESC',
+            'group' => 'Artist.name'
+    ));
+    
+    $this->Artist->bindModel(array(
+    'hasOne' => array(
+        'ArtistsEdition',
+        'FilterEdition' => array(
+            'className' => 'Edition',
+            'foreignKey' => false,
+            'conditions' => array('FilterEdition.id = ArtistsEdition.edition_id')
+    ))));
+    
+    $artists_hype = $this->Artist->find('all', array(
+            'fields' => array('Artist.*, COUNT(Artist.id) as nbeditions'),
+            'conditions' => array('YEAR(FilterEdition.date_start) = 2013 AND Artist.hotttnesss > 0.65'), 
+            'limit' => 20,
+            'order' => 'nbeditions DESC',
+            'group' => 'Artist.name'
+    ));
+
+		$this->set('artists_hype', $artists_hype);
+		$this->set('artists_mainstream', $artists_mainstream);
+		$this->set('artists_superstars', $artists_superstars);
+		
+		// les découvertes
 	}
 	
 	

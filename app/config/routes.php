@@ -35,7 +35,7 @@
 	Router::connect('/artist/*', array('controller' => 'artists', 'action' => 'display'));
 	Router::connect('/festival/*', array('controller' => 'festivals', 'action' => 'display'));
 	
-	Router::connect('/artists', array('controller' => 'artists', 'action' => 'index'));
+	Router::connect('/artistes', array('controller' => 'artists', 'action' => 'index'));
 	Router::connect('/festivals', array('controller' => 'festivals', 'action' => 'index'));
 	Router::connect('/actualite', array('controller' => 'posts', 'action' => 'index'));
 	
