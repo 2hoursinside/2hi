@@ -82,7 +82,25 @@ class ArtistsController extends AppController {
             'order' => 'nbeditions DESC',
             'group' => 'Artist.name'
     ));
-
+    
+    $this->Artist->bindModel(array(
+    'hasOne' => array(
+        'ArtistsEdition',
+        'FilterEdition' => array(
+            'className' => 'Edition',
+            'foreignKey' => false,
+            'conditions' => array('FilterEdition.id = ArtistsEdition.edition_id')
+    ))));
+    
+    $artists_new = $this->Artist->find('all', array(
+            'fields' => array('Artist.*, COUNT(Artist.id) as nbeditions'),
+            'conditions' => array('YEAR(FilterEdition.date_start) = 2013 AND Artist.hotttnesss > 0.65'), 
+            'limit' => 20,
+            'order' => 'nbeditions DESC',
+            'group' => 'Artist.name'
+    ));
+    
+    $this->set('artists_new', $artists_new);
 		$this->set('artists_hype', $artists_hype);
 		$this->set('artists_mainstream', $artists_mainstream);
 		$this->set('artists_superstars', $artists_superstars);

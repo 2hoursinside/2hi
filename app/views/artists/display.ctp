@@ -46,8 +46,10 @@
 ?> 
 
 <div class="photo-c">
-  <?php echo $this->Html->image('artist/covers/default.jpg'); ?>
+
 </div>
+
+<div class="wrapper">
         
 	<div id="col" class="artist">
   	<ul class="button_likes">
@@ -303,3 +305,5 @@
       </ul>
     </div>
   </div>
+
+</div>

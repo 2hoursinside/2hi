@@ -38,6 +38,7 @@
         <div id="nav">
           <div id="middle">
             <div id="nav_left">
+              <div id="logo"><?php echo $this->Html->link('', '/', array('escape' => false)); ?></div>
               <ul class="menu">
               	<li><?php echo $this->Html->link('Festivals', '/'); ?>
                 </li>
@@ -45,12 +46,12 @@
                 <li><?php echo $this->Html->link('Actualités', '/actualite', array()); ?></li>
               </ul>
             </div>
-            <div id="logo"><?php echo $this->Html->link('', '/', array('escape' => false));
+            <!-- <div id="logo"><?php echo $this->Html->link('', '/', array('escape' => false));
             /*
             if (empty($user['Artist']))  
               echo $this->Html->link('', '/profil/' . $session->read('Auth.User.login') . '/artists', array('escape' => false));
             else
-              echo $this->Html->link('', '/', array('escape' => false)); */ ?></div>
+              echo $this->Html->link('', '/', array('escape' => false)); */ ?></div> -->
             <div id="nav_right">
             	<?php echo $form->create('Search', array('id' => 'search_form', 'url' => array(
 								'plugin' => 'search', 
@@ -92,15 +93,13 @@
         </div>
       </div>
       
-      <div id="content">
-      	<?php 
-				if ($session->check('Message.auth')) $session->flash('auth'); 
-				if ($session->check('Message.flash')) $session->flash();
-        echo $content_for_layout; 
-				?>
-        <div class="spacer"></div>
-        <br /><br /><br /><br />
-      </div>
+    	<?php 
+			if ($session->check('Message.auth')) $session->flash('auth'); 
+			if ($session->check('Message.flash')) $session->flash();
+      echo $content_for_layout; 
+			?>
+      <div class="spacer"></div>
+      <br /><br /><br /><br />
       
       <div id="footer">
         <?php

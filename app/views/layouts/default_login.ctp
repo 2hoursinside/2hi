@@ -25,7 +25,7 @@
 		</script>
   </head>
   
-  <body>
+  <body class="login">
     <div id="page">
       <div id="header">
         <div id="top"></div>

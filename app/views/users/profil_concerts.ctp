@@ -166,64 +166,66 @@ echo $this->Html->scriptBlock("
 ?>
 
 <div class="photo-c">
-  <?php echo $html->image('user/covers/default_' . $user['User']['gender'] . '.jpg'); ?>
 </div>
 
-<div id="col" class="profil-artists">
-  <div id="edit-concerts">
-  
-	<h1><?php echo $this->Html->link($user['User']['login'], '/profil/' . $user['User']['login']); ?> &raquo; concerts</h1>
-  <p>C'est ici que vous allez vous créer votre journal de concerts, et y renseigner tous les artistes que vous avez vus.</p><br /><br />
-  
-  <table width="100%">
-  <tr>
-  <td width="50%">
-    <h2>Ajouter un concert</h2>
-    <p>Indiquez tous vos précédents concerts.</p><br />
-    <?php 
-		echo ($form->create('Concert', array('id' => 'addConcertForm'))); 
-		echo $form->input('artist_name', array('label' => false, 'id' => 'suggest', 'value' => 'Qui ? Ex : Daft Punk'));
-		echo $form->input('place_name', array('label' => false, 'id' => 'place', 'value' => 'Où ? Ex : Olympia'));
-		echo $form->input('date', array('label' => false, 'id' => 'date', 'value' => 'Quand ? Ex : 3 Juin 2012')) . '<br />'; ?>
-    <button class="button save" type="submit">Ajouter</button>
-    </form>
-    <br /><br /><br /><br />
-  </td>
-  
-  <td width="50%">
-    <h2>Compléter vos festivals</h2>
-    <p>Quels artistes vous avez vus lors de vos festivals ?</p><br />
+<div class="wrapper">
+
+  <div id="col" class="profil-artists">
+    <div id="edit-concerts">
     
-    <?php
+  	<h1><?php echo $this->Html->link($user['User']['login'], '/profil/' . $user['User']['login']); ?> &raquo; concerts</h1>
+    <p>C'est ici que vous allez vous créer votre journal de concerts, et y renseigner tous les artistes que vous avez vus.</p><br /><br />
     
-    if (!empty($seen_editions)) {
-      echo '<ul class="list-concerts">';
-      foreach($seen_editions as $edition) {
-        $ts_start = strtotime($edition['Edition']['date_start']);
-        echo '<li>';
-        echo $this->Html->image('festival/profilepics/thumb.festival.' . $edition['Edition']['Festival']['photo_r'], array('class' => 'smallppic headline'));
-        echo '<h3>' . $edition['Edition']['Festival']['name'] . ' ' . strftime("%Y", $ts_start) . '</h3>';
-        $nb_artists = 0;
-        echo '<span>' . $nb_artists . ' artistes vus</span>';
-        echo '</li>';
+    <table width="100%">
+    <tr>
+    <td width="50%">
+      <h2>Ajouter un concert</h2>
+      <p>Indiquez tous vos précédents concerts.</p><br />
+      <?php 
+  		echo ($form->create('Concert', array('id' => 'addConcertForm'))); 
+  		echo $form->input('artist_name', array('label' => false, 'id' => 'suggest', 'value' => 'Qui ? Ex : Daft Punk'));
+  		echo $form->input('place_name', array('label' => false, 'id' => 'place', 'value' => 'Où ? Ex : Olympia'));
+  		echo $form->input('date', array('label' => false, 'id' => 'date', 'value' => 'Quand ? Ex : 3 Juin 2012')) . '<br />'; ?>
+      <button class="button save" type="submit">Ajouter</button>
+      </form>
+      <br /><br /><br /><br />
+    </td>
+    
+    <td width="50%">
+      <h2>Compléter vos festivals</h2>
+      <p>Quels artistes vous avez vus lors de vos festivals ?</p><br />
+      
+      <?php
+      
+      if (!empty($seen_editions)) {
+        echo '<ul class="list-concerts">';
+        foreach($seen_editions as $edition) {
+          $ts_start = strtotime($edition['Edition']['date_start']);
+          echo '<li>';
+          echo $this->Html->image('festival/profilepics/thumb.festival.' . $edition['Edition']['Festival']['photo_r'], array('class' => 'smallppic headline'));
+          echo '<h3>' . $edition['Edition']['Festival']['name'] . ' ' . strftime("%Y", $ts_start) . '</h3>';
+          $nb_artists = 0;
+          echo '<span>' . $nb_artists . ' artistes vus</span>';
+          echo '</li>';
+        }
+        echo '</ul>';
+      } else {
+        echo "Vous n'avez pas encore assisté à de festivals.";
       }
-      echo '</ul>';
-    } else {
-      echo "Vous n'avez pas encore assisté à de festivals.";
-    }
-    ?>
-  </td>
-  </tr>
-  </table>
-  <?php // debug($seen_editions); ?>
-  <br />
-  
+      ?>
+    </td>
+    </tr>
+    </table>
+    <?php // debug($seen_editions); ?>
+    <br />
+    
+    </div>
   </div>
-</div>
+  
+  <div id="sidebar" class="profil">
+  	<div id="last-concerts" class="sidebar_block">
+  		<h2>derniers concerts</h2>
+  	</div>
+  </div>
 
-<div id="sidebar" class="profil">
-	<div id="last-concerts" class="sidebar_block">
-		<h2>derniers concerts</h2>
-	</div>
 </div>
-

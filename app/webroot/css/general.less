@@ -2,6 +2,7 @@
 @arial:  Arial, Helvetica, sans-serif; 
 @helveticaNeue:  Helvetica, Arial, sans-serif; 
 @museo:  Museo700, "Trebuchet MS", Arial, Helvetica, sans-serif; 
+@bariol: Bariol, Helvetica, Arial, sans-serif;
 
 @dblue: #316777;
 @lblue: #00a388;
@@ -25,6 +26,18 @@
          url('../fonts/museo700-regular-webfont.svg#Museo700') format('svg'); 
     font-weight:  normal; 
     font-style:  normal; 
+}
+
+@font-face {
+    font-family: 'Bariol';
+    src: url('../fonts/bariol_regular-webfont.eot');
+    src: url('../fonts/bariol_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/bariol_regular-webfont.woff') format('woff'),
+         url('../fonts/bariol_regular-webfont.ttf') format('truetype'),
+         url('../fonts/bariol_regular-webfont.svg#bariol_regularregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
 
 * { margin: 0; padding: 0; }
@@ -53,8 +66,8 @@
 
 /********************* TAGS ************************/
 body { background-color: #eeeeee; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color:@black; }
-h1 { font-family: @museo; color: @red; font-size: 39px; text-shadow: #fff 0 1px 0; }
-h2 { font-family: @museo; color: @red; font-size: 26px; }
+h1 { font-family: @bariol; color: @red; font-size: 39px; text-shadow: #fff 0 1px 0; }
+h2 { font-family: @bariol; color: @red; font-size: 26px; }
 	
 a { color: @lblue; text-decoration: none; 
     &:hover { color: @dblue; }
@@ -63,17 +76,17 @@ ul { list-style-type: none; }
 
 
 /********************* LAYOUT ************************/
-#page { background: url(../img/page_bg.png) repeat-x; min-height: 870px; }
-#content { width: 977px; margin: auto; background-color:white; border-left: 2px solid #b3c8c2; border-right: 2px solid #b3c8c2; border-bottom: 2px solid #b3c8c2;}
+#page { background: #f5f5f5; min-height: 870px; }
+.wrapper { width: 977px; margin: auto; }
 
-#header { font-family: @museo; height: 62px;   
-  #top { background: url(../img/top_bg.png) repeat-x; height: 5px}
+#header { font-family: @museo; height: 59px;   
+  #top { background: url(../img/top_bg.png) repeat-x; height: 2px}
   #nav { background: url(../img/nav_bg.png) repeat-x; height: 58px; position:  absolute; width:  100%; }
   #middle { width: 977px; position: relative; margin: auto; height: 58px; }
   #nav_left { height: 58px; width: 50%; float: left; }
   #nav_right { height: 58px; width: 50%; float: right; }
-  #logo { position: absolute; top: 0px; left: 381px;
-    a {display:block; height:111px; background:url('../img/logo_3jd.png') left top no-repeat; width:162px;
+  #logo { float: left; margin-left: 10px; padding-top: 11px; margin-right: 30px;
+    a {display:block; width:65px; height:35px; background:url('../img/logo_header.png') left top no-repeat; 
 	  &:hover {background-position:bottom}
 	}
   }
@@ -102,14 +115,17 @@ ul { list-style-type: none; }
   }
 }
 
-#col { width: 657px; float: left; padding: 13px 0 0 20px; 
+#col { width: 657px; float: left; padding: 13px 0 0 0; 
   h1 a { color:@red;
     &:hover { color: saturate(@red, 30%); }
   }
 }
 .photo-c  { 
-  img { border: 0px; width: 977px; height: 172px; border-bottom:3px solid @red; }
+  border: 0px; width: 100%; height: 137px; border-bottom:3px solid #e0e0e0; padding-top: 35px;
+  background: black url('../img/festival/covers/default.jpg') no-repeat;
+  background-repeat: no-repeat; 
 }
+
 #sidebar { width: 280px; float: left; padding: 17px 0 0 20px; color: @dblue; font-size: 14px; font-family: @arial; 
   h2 { font-size: 20px; padding: 6px 0 8px 10px; background:url('../img/bg_sidebar.png') no-repeat; width:290px; height:31px; color:white; }
 }
@@ -122,11 +138,17 @@ ul { list-style-type: none; }
 #col.festival { 
   h2 { padding: 0 8px 0 0; display:inline; }
   .date {color:@red; font-size:16px;}
-  .tags.left {clear:none; float:left; }
+}
+
+.photo-c.festival h1 { color: white; text-shadow: none;}
+
+.photo-c.festival .tags li { 
+  display: block; float: left; padding: 5px 7px; margin-right: 7px; 
+  background: rgba(255, 255, 255, 0.3); color: white; text-shadow: 0px 1px 0px black;
 }
 
 .ppic_festival { float: left;}
-.ppic.headline { border:3px solid @lblue; float:left; margin-right: 10px; width:100px; height:100px}
+.ppic.headline { float:left; margin-right: 10px; width:100px; height:100px}
 
 .tabs { clear: both; padding-top:5px; margin-left:-23px; }
 .ui-tabs-panel {padding:10px 0 0 20px; }
@@ -428,7 +450,7 @@ ul { list-style-type: none; }
 
 /********************* LOGIN ************************/
 #login {padding:13px 20px;}
-
+body.login #header #nav_left { width: 45%; }
 
 /********************* HOME ************************/
 #col.home {
