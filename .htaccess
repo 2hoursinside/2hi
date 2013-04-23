@@ -1,5 +1,18 @@
 <IfModule mod_rewrite.c>
    RewriteEngine on
+   RewriteCond %{HTTP_HOST}   ^acesup\.fr [NC]
+   RewriteRule ^/?(.*)         http://3joursdehors.fr/$1 [L,R=301]
+   RewriteCond %{HTTP_HOST}   ^www.acesup\.fr [NC]
+   RewriteRule ^/?(.*)         http://3joursdehors.fr/$1 [L,R=301]
+   RewriteCond %{HTTP_HOST}   ^cie-marinette-dozeville\.net [NC]
+   RewriteRule ^/?(.*)         http://3joursdehors.fr/$1 [L,R=301]
+   RewriteCond %{HTTP_HOST}   ^www.cie-marinette-dozeville\.net [NC]
+   RewriteRule ^/?(.*)         http://3joursdehors.fr/$1 [L,R=301]
+   RewriteCond %{HTTP_HOST}   ^roc-hc\.com [NC]
+   RewriteRule ^/?(.*)         http://3joursdehors.fr/$1 [L,R=301]
+   RewriteCond %{HTTP_HOST}   ^www.roc-hc\.com [NC]
+   RewriteRule ^/?(.*)         http://3joursdehors.fr/$1 [L,R=301]
+
    RewriteRule    ^$ app/webroot/    [L]
    RewriteRule    (.*) app/webroot/$1 [L]
 </IfModule>
