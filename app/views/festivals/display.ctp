@@ -76,54 +76,87 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
 
 <?php if (empty($festival['Festival']['photo_c'])) { $cover = 'default.jpg'; } else { $cover = $festival['Festival']['photo_c']; } ?>
 
-<div class="photo-c festival" style="background: black url(<?php echo $this->webroot . 'img/festival/covers/' . $cover; ?>) no-repeat">
-  
+<div class="photo-c festival" style="background: black url(<?php echo $this->webroot . 'img/festival/covers/' . $cover; ?>) center center no-repeat">
   <div class="wrapper">
-    <?php if ($festival['Festival']['photo_r'] != 'default.jpg')  $displayPic = 'left'; else $displayPic = '';
-  	
-  	if ($displayPic) { ?>
-  	<div class="ppic_festival">
-  	   <?php echo $this->Html->image('festival/profilepics/thumb.festival.' . $festival['Festival']['photo_r'], array('class' => 'ppic headline')); ?>
-    </div>
-    <?php } ?>
-  	
-  	<div class="festival_title">
-      <h1><?php echo $festival['Festival']['name']; ?>  <?php echo $this->Html->image('flags/'. $festival['Country']['locale']. '.png', array('class' => 'flag', 'id' => 'cur_fest_flag', 'alt' => $festival['Country']['locale'], 'width' => '24px')); ?></h1>
-     
-  	</div>
-  	
-  	<?php
-    if (!empty($festival['Genre'])) {
-    	echo '<ul class="tags ' . $displayPic . '">';
-      foreach($festival['Genre'] as $genre) {
-      	echo '<li>' . $genre['name'] . '</li>';
+  
+    <div class="bg-gradient">
+      <?php if ($festival['Festival']['photo_r'] != 'default.jpg')  $displayPic = 'left'; else $displayPic = '';
+    	
+    	if ($displayPic) { ?>
+    	<div class="ppic_festival">
+    	   <?php echo $this->Html->image('festival/profilepics/thumb.festival.' . $festival['Festival']['photo_r'], array('class' => 'ppic headline')); ?>
+      </div>
+      <?php } ?>
+    	
+    	<div class="festival_title">
+        <h1><?php echo $festival['Festival']['name']; ?>  <?php echo $this->Html->image('flags/'. $festival['Country']['locale']. '.png', array('class' => 'flag', 'id' => 'cur_fest_flag', 'alt' => $festival['Country']['locale'], 'width' => '24px')); ?></h1>
+       
+    	</div>
+    	
+    	<?php
+      if (!empty($festival['Genre'])) {
+      	echo '<ul class="tags ' . $displayPic . '">';
+        foreach($festival['Genre'] as $genre) {
+        	echo '<li>' . $genre['name'] . '</li>';
+        }
+        echo '</ul>';
       }
-      echo '</ul>';
-    }
-    ?>
+      ?>
+    </div>
   </div>
 </div>
 
 
-<div class="wrapper">
-
-  <div id="col" class="festival">
-  	
-    <div class="breadcrumb">
+<div class="wrapper" class="festival">
+  
+    <div id="breadcrumb">
       <?php echo $this->Html->link('Festivals', '/festivals'); ?> &raquo;
       <?php echo $this->Html->link($festival['Festival']['name'], '/festival/' . $festival['Festival']['url']); ?>
     </div>
     
-    <?php if (!empty($festival['Festival']['bio'])) { ?>
-    <br />
-    <div class="bio expandable"><?php echo $festival['Festival']['bio']; ?></div>
-    <?php } else { ?>
-    <br /><br />
-    <?php } 
+    <div id="infos-festival">
+      <div class="bio">
+        <?php 
+        if (!empty($festival['Festival']['bio'])) { 
+          echo '<div class="bio expandable">' . $festival['Festival']['bio'] . '</div>';
+        } else {
+          echo 'Pas de description disponible pour ce festival.';
+        } ?>
+      </div>
+      <ul class="infos-circles">
+        <?php 
+  			if (isset($festival['Festival']['creation_year']) && $festival['Festival']['creation_year'] != 0) { ?>
+        <li class="year">
+          <?php echo $festival['Festival']['creation_year']; ?><span>création</span>
+        </li>
+        <?php 
+        }
+        if (isset($festival['Festival']['capacity']) && $festival['Festival']['capacity'] != 0) { ?>
+        <li class="capacity">
+          <?php echo strstr((number_format($festival['Festival']['capacity'])), ',', true); ?>k <span>places</span>
+        </li>
+        <?php 
+        }
+        if (isset($editions[0]['Edition']['price']) && $editions[0]['Edition']['price'] != 0) { ?>
+        <li class="price">
+          <?php echo $editions[0]['Edition']['price']; ?> <span>euros</span>
+        </li>
+        <?php 
+        }
+        if(isset($festival['City']['name'])) { ?>
+        <li class="map">
+        </li>
+  			<?php } ?>
+      </ul>
+      
+.    </div>
     
+    
+    <div id="col" class="festival">
+    
+    <?php    
     //debug($editions);
-  
-  
+    
     if (!empty($editions)) { 
     
       // Parse les éditions et les affiche
@@ -469,9 +502,7 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
         if(isset($festival['City']['name'])) echo ', '. $festival['City']['name'] . ' ('. $festival['Department']['code'].')';
   		} ?></p>
       
-      <?php if(isset($festival['City']['name'])) { ?>
-      <div class="map"></div>
-      <?php } else { echo '<br />'; }?>
+      <br /><br />
       
       <ul class="infos_list">
         <?php if (isset($festival['Festival']['capacity']) && $festival['Festival']['capacity'] != 0) { ?>

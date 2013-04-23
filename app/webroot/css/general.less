@@ -135,20 +135,42 @@ ul { list-style-type: none; }
 
 
 /********************* FESTIVAL ************************/
-#col.festival { 
-  h2 { padding: 0 8px 0 0; display:inline; }
-  .date {color:@red; font-size:16px;}
-}
-
-.photo-c.festival h1 { color: white; text-shadow: none;}
-
-.photo-c.festival .tags li { 
-  display: block; float: left; padding: 5px 7px; margin-right: 7px; 
-  background: rgba(255, 255, 255, 0.3); color: white; text-shadow: 0px 1px 0px black;
-}
+.photo-c.festival {  padding-top: 0px; height: 172px; 
+  .bg-gradient  { 
+    background: url('../img/bg_gradient_cover.png') no-repeat; width: 655px; height: 137px; padding-top: 35px; 
+    background-position-x: -80px; position: absolute; }
+  h1 { 
+    color: white; text-shadow: none; margin-bottom: 10px; text-shadow: 0px 2px 0px black;}
+  .tags li  { 
+    display: block; float: left; padding: 5px 7px; margin-right: 10px; 
+    background: rgba(255, 255, 255, 0.3); color: white; text-shadow: 0px 1px 0px black;
+  }
+} 
 
 .ppic_festival { float: left;}
-.ppic.headline { float:left; margin-right: 10px; width:100px; height:100px}
+.ppic.headline { float:left; margin-right: 30px; width:100px; height:100px}
+
+.wrapper.festival { clear: both; }
+#breadcrumb       { margin-top: 13px; clear: both; } 
+
+ul.infos-circles    { float: right; }  
+ul.infos-circles li { 
+  float: right; background: white; width: 115px; height: 95px; border-radius: 57px; border: 3px solid #e6e6e6; margin-left: 20px;
+  display: block; font-family: @bariol; font-size: 40px; text-align: center; padding-top: 20px;
+  
+  span { font-size: 17px; display: block; }
+}
+
+ul.infos-circles li.map { -webkit-mask-box-image: url('../img/mask_maps.svg'); }
+
+.bio { font-size: 12px; color: @black; font-family: @arial; padding:  9px 0 0 0; float: left; width: 400px; line-height: 19px;
+  p { padding-bottom: 5px; }
+}
+
+#col.festival { clear: both; margin-top: 50px;
+  h2 { padding: 0 8px 0 0; display:inline; }
+  .date {color:@red; font-size:16px; }
+}
 
 .tabs { clear: both; padding-top:5px; margin-left:-23px; }
 .ui-tabs-panel {padding:10px 0 0 20px; }
@@ -157,11 +179,7 @@ ul { list-style-type: none; }
   li { display:  inline-block; padding:  0 4px 0 0; }
 }
 
-#col .tags { clear: both; padding: 4px 0 0 0; }
 
-.bio { font-size: 12px; color: @black; font-family: @arial; padding:  9px 0 0 0; clear: both;
-  p { padding-bottom:5px; }
-}
 
 .edition { padding:  26px 0 4px 0; 
   .button_likes {
@@ -229,11 +247,10 @@ ul { list-style-type: none; }
 .edition_separator { width: 527px; clear:both; margin: 0 auto; margin-top:10px; border-top: 1px solid #fcfdf8; color: #d1dbc8; background-color: #d1dbc8; }
 
 
-#sidebar.festival { 
+#sidebar.festival { margin-top: 50px;
   #festival_infos { font-size: 15px; 
     p { float: left; padding: 1px 0 0 2px; width: 270px; }
     .flag { padding: 0 4px 0 0; }
-    .map { height: 127px; width: 260px; border: 3px solid #ffff9d; clear: both; margin: 32px 0 0 0; }
     .infos_list { padding: 11px 0 0 0; 
       li { height: 27px; padding: 3px 0 0 4px; 
         img { display: block; float: left; padding:  0 4px 0 0; }

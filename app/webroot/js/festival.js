@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $('div.expandable').expander({
-    slicePoint: 250,
+    slicePoint: 310,
     expandPrefix: ' ',
     expandText: '» Lire la suite',
     userCollapseText: '« Lire moins',
