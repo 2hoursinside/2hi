@@ -178,7 +178,6 @@ class FestivalsController extends AppController {
     $fest_affinity = $this->getAffinityByFestival($festival['Festival']['id']);
     $this->set('fest_affinity', $fest_affinity);
     
-    
 		$this->set('editions', $editions);
 		$this->set('festival', $festival);
 		$this->set('user', $user);

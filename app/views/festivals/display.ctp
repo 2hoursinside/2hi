@@ -149,10 +149,28 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
   			<?php } ?>
       </ul>
       
-.    </div>
+.   </div>
+  <div class="spacer"></div>
+  </div>    
     
-    
-    <div id="col" class="festival">
+  <div id="menu-editions">
+    <ul>
+    <?php 
+    if (!empty($editions)) { 
+      foreach ($editions as $key => $edition) {
+        $timestamp = strtotime($edition['Edition']['date_end']);
+        $anneeedition = strftime("%Y", $timestamp);
+        if ($key == 0)
+          echo '<li class="active" ><a href="#'. $anneeedition . '">' . $anneeedition . '</a></li>';
+        else
+          echo '<li><a href="#'. $anneeedition . '">' . $anneeedition . '</a></li>';
+      }
+    } ?>
+    </ul>
+  </div>
+
+
+  <div class="wrapper festival">
     
     <?php    
     //debug($editions);
@@ -174,7 +192,7 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
         $timestamp = strtotime($edition['Edition']['date_end']);
         $anneeedition = strftime("%Y", $timestamp);
       ?>
-    <div class="edition">
+    <div class="edition edition<?php echo $anneeedition; ?>">
       <ul class="button_likes">
       <?php
   			// éditions précédentes
@@ -214,11 +232,10 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
   		}
       ?>
       </ul>
-      <h2>Edition <?php echo $anneeedition; ?></h2>
+      <h2>
       <?php
       $ts_start = strtotime($edition['Edition']['date_start']);
   		$ts_end = strtotime($edition['Edition']['date_end']);
-  		echo '<span class="date"> ';
   		if ($ts_start == $ts_end) {
   			echo 'le ' . strftime("%d %B %Y", $ts_end);
   		} elseif (strftime('%m', $ts_start) == strftime('%m', $ts_end)) {
@@ -226,335 +243,273 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
   		} else {
   			echo 'du '. strftime("%d %B", $ts_start) . ' au ' . strftime("%d %B", $ts_end);
   		}
-  		echo '</span>'; ?>
+  		echo ' ' . $anneeedition; ?>
+  		<span class="affinity"> (<?php echo round($fest_affinity*100); ?>% d'affinité)</span>
+  		</h2>
       
-      <div class="tabs">
-        <ul>
-          <li><a href="#tabs-<?php echo $anneeedition; ?>-lineup">Lineup</a></li>
-          <?php 
-          // Photos
-          if (!empty($photos['photo'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-photos">Photos</a></li> <?php } 
-          // Livesets
-          if (!empty($edition['Liveset'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-sets">Sets</a></li> <?php }
-          // Playlist Spotify
-          if (!empty($edition['Edition']['spotify_uri'])) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-spotify">Playlist</a></li> <?php }
-          // Festivaliers y sont allés
-          if ($timestamp < time() && !empty($users_went)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-festivaliers">Ils y étaient</a></li> <?php }
-          // Festivaliers y vont
-          if ($timestamp >= time() && !empty($users_going)) { ?><li><a href="#tabs-<?php echo $anneeedition; ?>-festivaliers">Ils y vont</a></li> <?php } ?>
-  
-          <!-- <li><a href="#tabs-<?php echo $anneeedition; ?>-videos">Vidéos</a></li> -->
-        </ul>
-        <div id="tabs-<?php echo $anneeedition; ?>-lineup">
-        <?php
-        if (isset($edition['Day']) && !empty($edition['Day']) && !empty($edition['Day'][0]['Artist'])) {
-  				$nbdays = count($edition['Day']);
-  				
-  				// hack to always have the right order in edition days
-  				if (isset($edition['Day'][0]) && strtotime($edition['Day'][0]['date']) > strtotime($edition['Day'][1]['date'])){
-  					$days = array_reverse($edition['Day']);
-  				} else{
-  					$days = $edition['Day'];
-  				} 
-  				
-  				if ($nbdays > 1 && $nbdays < 4) { ?>
-  					<table width="100%" class="days">
-  						<tr>
-  						<?php
-  						if (!empty($days)) {
-  							foreach ($days as $day){?>
-  								<th width="<?php echo 100 / $nbdays ; ?>%">
-  								<?php echo strftime("%A", strtotime($day['date'])) . '</th>';
-  							}
-  						} else { 
-  							echo "<th>&nbsp;</th>";
-  						}
-  						?>
-  						</tr>
-  						<tr>
-  						<?php
-  						if (!empty($days)) {
-  							foreach($days as $day) {
-  								echo '<td class="td-artist">';
-  								
-  								if (!empty($day['Artist'])) {
-  									foreach ($day['Artist'] as $x => $artist){
-  										
-  										$familiarity = round($artist['familiarity'] * 10);
-  										$relationship = artistRelationship($artist['id'], $user['Artist']);
-  							
-  										if ($x < 3) {
-  											echo '<div class="artist-lineup">';
-  											if (!empty($artist['fb_picture'])) {
-  												echo $this->Html->image($artist['fb_picture']);
-  											} else { 
-  												echo $this->Html->image('artist/profilepics/default.jpg');
-  											}
-  											
-  											if (!$relationship) {
-  												echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'familiarity8'));
-  											} else {
-  												echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'followed familiarity8'));
-  											}
-  											echo '</div>';
-  											
-  										} else {
-  											if (!$relationship) {
-  												echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'familiarity' . $familiarity));
-  											} else {
-  												echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'followed familiarity' . $familiarity));
-  											}
-  											if ($x < 3) echo '</div>'; else echo '<br />';
-  										}
-  										
-  									}
-  								} else {
-  									echo 'A venir.';	
-  								}
-  								echo '</td>';
-  							}
-  						} else {
-  							echo "<th>&nbsp;</th>";
-  						} ?>
-  						</tr>
-  					</table>
-          <?php } else { ?>
-            <table width="100%" class="days">
-            <?php
-  					foreach($days as $day) {
-  						echo '<tr><td class="td-artist td-artist-horiz">';
-  						echo '<span class="day">' . strftime("%A", strtotime($day['date'])) . '</span>';
-            	foreach ($day['Artist'] as $y => $artist){ ?>
-  							<?php
-                if ($y !== 0) {
-                  echo ' . ';
-  							}
-  							if ($y < 3) {
-  								/*if (!empty($artist['fb_picture']))
-  									echo $this->Html->image($artist['fb_picture'], array('class' => 'absmiddle'));
-  								else 
-  									echo $this->Html->image('artist/profilepics/default.jpg', array('class' => 'absmiddle'));
-  								*/
-  							}
-  							$relationship = artistRelationship($artist['id'], $user['Artist']);
-  							if (!$relationship) {
-                	echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'familiarity' . round($artist['familiarity'] * 10)));
-  							} else {
-  								echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'followed familiarity' . round($artist['familiarity'] * 10)));
-  							}
-              }
-            	echo '</td></tr>';
-  					} 
-  					?>
-            </tr>
-            </table>
-            <?php
-  				}
-  			} elseif ($edition['Artist']) { ?>
-  				<table width="100%" class="days">
-          <tr>
-          <td class="td-artist">
-          <?php
-  				foreach ($edition['Artist'] as $y => $artist){ ?>
-  					<?php
-  					if ($y !== 0)
-  						echo '. ';
-  					
-  					$relationship = artistRelationship($artist['id'], $user['Artist']);
-  					if (!$relationship) {
-  						echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'familiarity' . round($artist['familiarity'] * 10)));
-  					} else {
-  						echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'followed familiarity' . round($artist['familiarity'] * 10)));
-  					}
+      
+      <?php // peut afficher par jour ou non
+      $canDisplayDays = isset($edition['Day']) && !empty($edition['Day']) && !empty($edition['Day'][0]['Artist']); ?>
+        
+      <ul class="menu-display">
+        <li class="by-popularity <?php if (!$canDisplayDays) echo 'active'; ?>"><a href="#">par popularité</a></li>
+        <li class="by-day <?php if ($canDisplayDays) echo 'active'; else echo 'disabled'; ?>"><a href="#">par jour</a></li>
+      </ul>
+      
+      <div class="headliners">
+        <?php 
+        if (!empty($edition['Artist'])) {
+          foreach ($edition['Artist'] as $i => $artist) {
+            if ($i > 9) break; 
+            
+            if (!empty($artist['fb_picture'])) {
+              echo $this->Html->link($this->Html->image($artist['fb_picture'], array('original-title' => $artist['name'], 'class' => 'ppic tooltip')), '/artist/' . $artist['url'], array('escape' => false));
+            } else {
+              echo $this->Html->link($this->Html->image('artist/profilepics/default.jpg', array('original-title' => $artist['name'], 'class' => 'ppic tooltip')), '/artist/' . $artist['url'], array('escape' => false));
+            }
+            
           }
-  				if ($edition['Edition']['date_lineup'] != '2000-01-01' && $edition['Edition']['date_lineup'] != '1970-01-01' && $edition['Edition']['date_lineup'] != '0000-00-00') {
-  					$ts = strtotime($edition['Edition']['date_lineup']);
-  					if ($ts > time())
-  						echo "<br /><br /><div class='date-lineup'>La lineup complète sera annoncée le " . utf8_encode(strftime("%d %B %Y", $ts)) . '.</div>';
-  				} else {
-  					$ts_edition = strtotime($edition['Edition']['date_start']);
-  					if ($ts_edition > time())
-  						echo "<br /><br /><div class='date-lineup'>D'autres artistes sont encore à venir.</div>";
-  				}
-  				?>
-          </td>
-          </tr>
-          </table>
-          <?php
-  			} elseif ($edition['Edition']['date_lineup'] != '2000-01-01' && $edition['Edition']['date_lineup'] != '0000-00-00') {
-  				$ts = strtotime($edition['Edition']['date_lineup']);
-  				echo "Les artistes seront annoncés le " . utf8_encode(strftime("%d %B %Y", $ts)) . '.';
-        } else {
-  				$ts = strtotime($edition['Edition']['date_lineup']);
-  				if ($ts < time())
-  					echo "<div class='date-lineup'>Pas de lineup disponible pour cette édition.</div>";
-  				else 
-  					echo "<div class='date-lineup'>Les artistes seront bientôt annoncés.</div>";
-  			}
+        }
+        ?>
+      </div>
+      
+      <div class="lineup">
+      <?php
+      // AFFICHAGE PAR JOUR
+      if ($canDisplayDays) {
+				$nbdays = count($edition['Day']);
+				
+				// hack to always have the right order in edition days
+				if (isset($edition['Day'][0]) && strtotime($edition['Day'][0]['date']) > strtotime($edition['Day'][1]['date'])){
+					$days = array_reverse($edition['Day']);
+				} else{
+					$days = $edition['Day'];
+				} 
+				?>
+				
+        <table width="100%" class="days">
+        <?php
+				foreach($days as $day) {
+					echo '<tr><td class="td-artist td-artist-horiz">';
+					echo '<span class="day">' . strftime("%A", strtotime($day['date'])) . '</span>';
+        	foreach ($day['Artist'] as $y => $artist){ ?>
+						<?php
+            if ($y !== 0) {
+              echo ' . ';
+						}
+						if ($y < 3) {
+							/*if (!empty($artist['fb_picture']))
+								echo $this->Html->image($artist['fb_picture'], array('class' => 'absmiddle'));
+							else 
+								echo $this->Html->image('artist/profilepics/default.jpg', array('class' => 'absmiddle'));
+							*/
+						}
+						$relationship = artistRelationship($artist['id'], $user['Artist']);
+						if (!$relationship) {
+            	echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'familiarity' . round($artist['familiarity'] * 10)));
+						} else {
+							echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'followed familiarity' . round($artist['familiarity'] * 10)));
+						}
+          }
+        	echo '</td></tr>';
+				} 
+				?>
+        </tr>
+        </table>
+        <?php
+				
+		  // AFFICHAGE PAR POPULARITE
+			} elseif ($edition['Artist']) { ?>
+				<table width="100%" class="days">
+        <tr>
+        <td class="td-artist">
+        <?php
+				foreach ($edition['Artist'] as $y => $artist){ ?>
+					<?php
+					if ($y !== 0)
+						echo '. ';
+					
+					$relationship = artistRelationship($artist['id'], $user['Artist']);
+					if (!$relationship) {
+						echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'familiarity' . round($artist['familiarity'] * 10)));
+					} else {
+						echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'followed familiarity' . round($artist['familiarity'] * 10)));
+					}
+        }
+				if ($edition['Edition']['date_lineup'] != '2000-01-01' && $edition['Edition']['date_lineup'] != '1970-01-01' && $edition['Edition']['date_lineup'] != '0000-00-00') {
+					$ts = strtotime($edition['Edition']['date_lineup']);
+					if ($ts > time())
+						echo "<br /><br /><div class='date-lineup'>La lineup complète sera annoncée le " . utf8_encode(strftime("%d %B %Y", $ts)) . '.</div>';
+				} else {
+					$ts_edition = strtotime($edition['Edition']['date_start']);
+					if ($ts_edition > time())
+						echo "<br /><br /><div class='date-lineup'>D'autres artistes sont encore à venir.</div>";
+				}
+				?>
+        </td>
+        </tr>
+        </table>
+        
+      <?php
+      // LINEUP A VENIR
+			} elseif ($edition['Edition']['date_lineup'] != '2000-01-01' && $edition['Edition']['date_lineup'] != '0000-00-00') {
+				$ts = strtotime($edition['Edition']['date_lineup']);
+				echo "Les artistes seront annoncés le " . utf8_encode(strftime("%d %B %Y", $ts)) . '.';
+				
+		  // PAS DE LINEUP
+      } else {
+				$ts = strtotime($edition['Edition']['date_lineup']);
+				if ($ts < time())
+					echo "<div class='date-lineup'>Pas de lineup disponible pour cette édition.</div>";
+				else 
+					echo "<div class='date-lineup'>Les artistes seront bientôt annoncés.</div>";
+			}
+      ?>
+      </div>
+      
+      <?php 
+      // PHOTOS
+      if (!empty($photos['photo'])) { ?>
+      <div class="photos">
+      <h2>Photos</h2>
+      <?php  
+					echo '<ul class="photos">';
+					foreach ($photos['photo'] as $photo) {
+						echo '<li>' . $this->Html->link($this->Html->image('http://farm'.$photo['farm'].'.static.flickr.com/'.$photo['server'].'/'.$photo['id'].'_'.$photo['secret'].'_s.jpg'), 'http://farm'.$photo['farm'].'.static.flickr.com/'.$photo['server'].'/'.$photo['id'].'_'.$photo['secret'].'_b.jpg', array('rel' => 'photos', 'escape' => false)) . '</li>';
+					}
+					echo '</ul>'; ?>
+      </div>
+      <?php } ?>
+      
+      <?php 
+      // SOUNDCLOUD
+      if (!empty($edition['Liveset'])) { ?>
+      <div class="livesets">
+      <h2>Sets SoundCloud</h2>
+        <?php 
+        foreach($edition['Liveset'] as $liveset) {
+          $embed_info = json_decode($client->get('oembed', array('url' => $liveset['url'])));
+          print $embed_info->html;
+        }
+         ?>
+      </div>
+      <?php } ?>
+      
+      <?php 
+      // PLAYLIST SPOTIFY
+      if (!empty($edition['Edition']['spotify_uri'])) { ?>
+      <div class="playlist">
+      <h2>Playlist Spotify</h2>
+        <?php echo '<iframe src="https://embed.spotify.com/?uri=' . $edition['Edition']['spotify_uri'] . '&theme=white" width="270" height="350" frameborder="0" allowtransparency="true"></iframe>'; ?>
+      </div>
+      <?php } ?>
+      
+      <?php 
+      // FESTIVALIERS QUI Y VONT
+      if ($timestamp >= time() && !empty($users_going)) { ?>
+      <div class="festivaliers">
+        <h2>Ils y vont</h2>
+        <?php 
+        foreach ($users_going as $festivalier) {
+        	if (!empty($festivalier['facebook_id'])) 
+        	   echo $this->Html->link($this->Html->image('http://graph.facebook.com/' . $festivalier['facebook_id'] . '/picture', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
+        	else 
+        	   echo $this->Html->link($this->Html->image('user/profilepics/default.jpg', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
+        }
         ?>
         </div>
-        
-        <?php 
-        // PHOTOS
-        if (!empty($photos['photo'])) { ?>
-        <div id="tabs-<?php echo $anneeedition; ?>-photos">
-        <?php  
-  					echo '<ul class="photos">';
-  					foreach ($photos['photo'] as $photo) {
-  						echo '<li>' . $this->Html->link($this->Html->image('http://farm'.$photo['farm'].'.static.flickr.com/'.$photo['server'].'/'.$photo['id'].'_'.$photo['secret'].'_s.jpg'), 'http://farm'.$photo['farm'].'.static.flickr.com/'.$photo['server'].'/'.$photo['id'].'_'.$photo['secret'].'_b.jpg', array('rel' => 'photos', 'escape' => false)) . '</li>';
-  					}
-  					echo '</ul>'; ?>
-        </div>
-        <?php } ?>
-        
-        <?php 
-        // PLAYLIST SPOTIFY
-        if (!empty($edition['Liveset'])) { ?>
-        <div id="tabs-<?php echo $anneeedition; ?>-sets">
-          <?php 
-          foreach($edition['Liveset'] as $liveset) {
-            $embed_info = json_decode($client->get('oembed', array('url' => $liveset['url'])));
-            print $embed_info->html;
-          }
-           ?>
-        </div>
-        <?php } ?>
-        
-        <?php 
-        // PLAYLIST SPOTIFY
-        if (!empty($edition['Edition']['spotify_uri'])) { ?>
-        <div id="tabs-<?php echo $anneeedition; ?>-spotify">
-          <?php echo '<iframe src="https://embed.spotify.com/?uri=' . $edition['Edition']['spotify_uri'] . '&theme=white" width="600" height="680" frameborder="0" allowtransparency="true"></iframe>'; ?>
-        </div>
-        <?php } ?>
-        
-        <?php 
-        // FESTIVALIERS QUI Y VONT
-        if ($timestamp >= time() && !empty($users_going)) { ?>
-        <div id="tabs-<?php echo $anneeedition; ?>-festivaliers">
-          <div class="festivaliers">
-          <?php 
-          foreach ($users_going as $festivalier) {
-          	if (!empty($festivalier['facebook_id'])) 
-          	   echo $this->Html->link($this->Html->image('http://graph.facebook.com/' . $festivalier['facebook_id'] . '/picture', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
-          	else 
-          	   echo $this->Html->link($this->Html->image('user/profilepics/default.jpg', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
-          }
-          ?>
-          </div>
-          <div class="spacer"></div><br />
-        </div>
-        <?php } ?>
-        
-        <?php 
-        // FESTIVALIERS QUI Y ETAIENT
-        if ($timestamp < time() && !empty($users_went)) { ?>
-        <div id="tabs-<?php echo $anneeedition; ?>-festivaliers">
-          <div class="festivaliers">
-          <?php 
-          foreach ($users_went as $festivalier) {
-          	if (!empty($festivalier['facebook_id'])) 
-          	   echo $this->Html->link($this->Html->image('http://graph.facebook.com/' . $festivalier['facebook_id'] . '/picture', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
-          	else 
-          	   echo $this->Html->link($this->Html->image('user/profilepics/default.jpg', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
-          }
-          ?>
-          </div>
-          <div class="spacer"></div><br />
-        </div>
-        <?php } ?>
-        
-        
-        <!-- <div id="tabs-<?php echo $anneeedition; ?>-videos"> 
-          <p></p>
-        </div>
-        -->
+        <div class="spacer"></div><br />
       </div>
+      <?php } ?>
+      
+      <?php 
+      // FESTIVALIERS QUI Y ETAIENT
+      if ($timestamp < time() && !empty($users_went)) { ?>
+      <div class="festivaliers">
+        <h2>Ils y étaient</h2>
+        <?php 
+        foreach ($users_went as $festivalier) {
+        	if (!empty($festivalier['facebook_id'])) 
+        	   echo $this->Html->link($this->Html->image('http://graph.facebook.com/' . $festivalier['facebook_id'] . '/picture', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
+        	else 
+        	   echo $this->Html->link($this->Html->image('user/profilepics/default.jpg', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
+        }
+        ?>
+      </div>
+        
+      <div class="more-infos">
+        <h2>Informations</h2>
+        <p><?php echo $this->Html->image('flags/' . $festival['Country']['locale'].'.png', array('class' => 'flag', 'width' => '24px', 'height' => '17px'));?> Lieu :
+        <?php 
+    		if ($festival['Country']['locale'] != 'fre') {
+    			echo $festival['Country']['name'];
+    		} else {
+          if(isset($festival['Region']['name'])) echo $festival['Region']['name'];
+          if(isset($festival['City']['name'])) echo ', '. $festival['City']['name'] . ' ('. $festival['Department']['code'].')';
+    		} ?></p>
+        
+        <br /><br />
+      
+      
+        <ul class="infos_list">
+          <?php if (isset($festival['Festival']['capacity']) && $festival['Festival']['capacity'] != 0) { ?>
+          <li class="infos-places">
+            <?php echo $this->Html->image('icons/people.png', array('class' => '')); ?>
+            <span>&nbsp;Nombre de places : <?php echo $festival['Festival']['capacity']; ?></span>
+          </li>
+          <?php 
+          }
+    			if (isset($editions[0]['Edition']['price']) && $editions[0]['Edition']['price'] != 0) { ?>
+          <li class="infos-website">
+            <?php echo $this->Html->image('icons/euro.png', array('class' => '')); ?>
+            <span>&nbsp;Prix : <?php echo $editions[0]['Edition']['price']; ?> euros</span>
+          </li>
+          <?php 
+          }
+    			if (isset($festival['Festival']['creation_year']) && $festival['Festival']['creation_year'] != 0) { ?>
+          <li class="infos-website">
+            <?php echo $this->Html->image('icons/calendar.png', array('class' => '')); ?>
+            <span>&nbsp;Date de création : <?php echo $festival['Festival']['creation_year']; ?></span>
+          </li>
+          <?php 
+          }
+          if (isset($festival['Festival']['website'])) { ?>
+          <li class="infos-website">
+            <?php echo $this->Html->image('icons/link.png', array('class' => '')); ?>
+            <span>&nbsp;Site : <?php echo $this->Html->link($festival['Festival']['website'], 'http://' . $festival['Festival']['website']); ?></span>
+          </li>
+          <?php 
+          }
+    			/*
+          if (isset($festival['Festival']['email'])) { ?>
+          <li class="infos-contact">
+            <?php echo $this->Html->image('icons/contact.png', array('class' => '')); ?>
+            <span>&nbsp;<?php echo $this->Html->link('Contacter le festival', 'mailto:' . $festival['Festival']['email']); ?></span>
+          </li>
+          <?php } */?>
+        </ul>
+      </div>
+
+        
+      <div class="spacer"></div><br />
     </div>
+      <?php } ?>
+      
+      
+      <!-- <div id="tabs-<?php echo $anneeedition; ?>-videos"> 
+        <p></p>
+      </div>
+      -->
+
     <?php if ($key != $last_key) echo '<hr class="edition_separator" />';
       }
     }
     ?>
-    
+  
+  <div id="col" class="festival">
   </div>
   
   <div id="sidebar" class="festival">
-  	<!-- 
-    <div id="festival_friends" class="sidebar_block">
-      <h2>mes amis y vont</h2>
-      <ul class="friend_list">
-        <li><?php echo $this->Html->image('friend_exemple.jpg', array('class' => 'fb_thumb_pic'));?></li>
-        <li><?php echo $this->Html->image('friend_exemple.jpg', array('class' => 'fb_thumb_pic'));?></li>
-        <li><?php echo $this->Html->image('friend_exemple.jpg', array('class' => 'fb_thumb_pic'));?></li>
-        <li><?php echo $this->Html->image('friend_exemple.jpg', array('class' => 'fb_thumb_pic'));?></li>
-      </ul>
-    </div>
-    -->
-    
-    <div id="festival_infos" class="sidebar_block">
-      <h2>informations</h2>
-      <p><?php echo $this->Html->image('flags/' . $festival['Country']['locale'].'.png', array('class' => 'flag', 'width' => '24px', 'height' => '17px'));?> Lieu :
-      <?php 
-  		if ($festival['Country']['locale'] != 'fre') {
-  			echo $festival['Country']['name'];
-  		} else {
-        if(isset($festival['Region']['name'])) echo $festival['Region']['name'];
-        if(isset($festival['City']['name'])) echo ', '. $festival['City']['name'] . ' ('. $festival['Department']['code'].')';
-  		} ?></p>
-      
-      <br /><br />
-      
-      <ul class="infos_list">
-        <?php if (isset($festival['Festival']['capacity']) && $festival['Festival']['capacity'] != 0) { ?>
-        <li class="infos-places">
-          <?php echo $this->Html->image('icons/people.png', array('class' => '')); ?>
-          <span>&nbsp;Nombre de places : <?php echo $festival['Festival']['capacity']; ?></span>
-        </li>
-        <?php 
-        }
-  			if (isset($editions[0]['Edition']['price']) && $editions[0]['Edition']['price'] != 0) { ?>
-        <li class="infos-website">
-          <?php echo $this->Html->image('icons/euro.png', array('class' => '')); ?>
-          <span>&nbsp;Prix : <?php echo $editions[0]['Edition']['price']; ?> euros</span>
-        </li>
-        <?php 
-        }
-  			if (isset($festival['Festival']['creation_year']) && $festival['Festival']['creation_year'] != 0) { ?>
-        <li class="infos-website">
-          <?php echo $this->Html->image('icons/calendar.png', array('class' => '')); ?>
-          <span>&nbsp;Date de création : <?php echo $festival['Festival']['creation_year']; ?></span>
-        </li>
-        <?php 
-        }
-        if (isset($festival['Festival']['website'])) { ?>
-        <li class="infos-website">
-          <?php echo $this->Html->image('icons/link.png', array('class' => '')); ?>
-          <span>&nbsp;Site : <?php echo $this->Html->link($festival['Festival']['website'], 'http://' . $festival['Festival']['website']); ?></span>
-        </li>
-        <?php 
-        }
-  			/*
-        if (isset($festival['Festival']['email'])) { ?>
-        <li class="infos-contact">
-          <?php echo $this->Html->image('icons/contact.png', array('class' => '')); ?>
-          <span>&nbsp;<?php echo $this->Html->link('Contacter le festival', 'mailto:' . $festival['Festival']['email']); ?></span>
-        </li>
-        <?php } */?>
-      </ul>
-    </div>
-    
-    <?php
-    /// SPOTIFY
-    if (!empty($editions[0]['Edition']['spotify_uri'])) { 
-      $timestamp = strtotime($editions[0]['Edition']['date_end']);
-      $anneeedition = strftime("%Y", $timestamp);
-      ?>
-      <div id="festival_infos" class="sidebar_block">
-      <h2>playlist <?php echo $anneeedition; ?></h2> <?php 
-      echo '<iframe src="https://embed.spotify.com/?uri=' . $editions[0]['Edition']['spotify_uri'] . '&theme=white" width="260" height="340" frameborder="0" allowtransparency="true"></iframe>'; 
-    } ?>
-    
-      
     
     <!-- 
     <div id="festival_news" class="sidebar_block">
