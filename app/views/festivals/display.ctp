@@ -261,7 +261,7 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
           <a href="#lineup-<?php echo $anneeedition; ?>">par popularité</a>
         </li>
         <?php if ($canDisplayDays) { ?>
-        <li class="by-day active">
+        <li class="by-day <?php if ($timestamp > time()) { echo 'active'; } ?>">
             <a href="#lineup-<?php echo $anneeedition; ?>-days">par jour</a>
         </li>
         <?php } ?>
