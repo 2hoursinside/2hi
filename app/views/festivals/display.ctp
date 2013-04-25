@@ -2,6 +2,7 @@
 	echo $this->Html->script('jquery.expander.min', false);
 	echo $this->Html->script('jquery.fancybox-1.3.4.pack', false);
 	echo $this->Html->script('jquery.mousewheel-3.0.4.pack', false);
+	echo $this->Html->script('jquery.tabify', false);
 	echo $this->Html->script('festival', false);
 	echo $this->Html->scriptBlock("
 	$(document).ready(function() {
@@ -166,9 +167,9 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
         $timestamp = strtotime($edition['Edition']['date_end']);
         $anneeedition = strftime("%Y", $timestamp);
         if ($key == 0)
-          echo '<li class="active" ><a href="#'. $anneeedition . '">' . $anneeedition . '</a></li>';
+          echo '<li class="active" ><a href="#edition-'. $anneeedition . '">' . $anneeedition . '</a></li>';
         else
-          echo '<li><a href="#'. $anneeedition . '">' . $anneeedition . '</a></li>';
+          echo '<li><a href="#edition-'. $anneeedition . '">' . $anneeedition . '</a></li>';
       }
     } ?>
     </ul>
@@ -197,7 +198,7 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
         $timestamp = strtotime($edition['Edition']['date_end']);
         $anneeedition = strftime("%Y", $timestamp);
       ?>
-    <div class="edition edition<?php echo $anneeedition; ?>">
+    <div class="edition" id="edition-<?php echo $anneeedition; ?>">
       <ul class="button_likes">
       <?php
   			// éditions précédentes
@@ -248,8 +249,7 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
   		} else {
   			echo 'du '. strftime("%d %B", $ts_start) . ' au ' . strftime("%d %B", $ts_end);
   		}
-  		echo ' ' . $anneeedition; ?>
-  		<?php if ($timestamp > time()) echo '<span class="affinity"> (' . round($fest_affinity*100) . '% d\'affinité)</span>'; ?>
+  		if ($timestamp > time()) echo '<span class="affinity"> (' . round($fest_affinity*100) . '% d\'affinité)</span>'; ?>
   		</h2>
       
       
@@ -257,8 +257,14 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
       $canDisplayDays = isset($edition['Day']) && !empty($edition['Day']) && !empty($edition['Day'][0]['Artist']); ?>
         
       <ul class="menu-display">
-        <li class="by-popularity <?php if (!$canDisplayDays) echo 'active'; ?>"><a href="#">par popularité</a></li>
-        <li class="by-day <?php if ($canDisplayDays) echo 'active'; else echo 'disabled'; ?>"><a href="#">par jour</a></li>
+        <li class="by-popularity <?php if (!$canDisplayDays) { echo 'active'; } elseif ($timestamp < time()) { echo 'active'; } ?>">
+          <a href="#lineup-<?php echo $anneeedition; ?>">par popularité</a>
+        </li>
+        <?php if ($canDisplayDays) { ?>
+        <li class="by-day active">
+            <a href="#lineup-<?php echo $anneeedition; ?>-days">par jour</a>
+        </li>
+        <?php } ?>
       </ul>
       
       <div class="headliners">
@@ -292,23 +298,14 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
 				} 
 				?>
 				
-        <table width="100%" class="days">
+        <table width="100%" class="days" id="lineup-<?php echo $anneeedition; ?>-days">
         <?php
 				foreach($days as $day) {
 					echo '<tr><td class="td-artist td-artist-horiz">';
 					echo '<span class="day">' . strftime("%A", strtotime($day['date'])) . '</span>';
-        	foreach ($day['Artist'] as $y => $artist){ ?>
-						<?php
-            if ($y !== 0) {
-              echo ' . ';
-						}
-						if ($y < 3) {
-							/*if (!empty($artist['fb_picture']))
-								echo $this->Html->image($artist['fb_picture'], array('class' => 'absmiddle'));
-							else 
-								echo $this->Html->image('artist/profilepics/default.jpg', array('class' => 'absmiddle'));
-							*/
-						}
+					
+        	foreach ($day['Artist'] as $y => $artist) { 
+            if ($y !== 0) echo ' . ';
 						$relationship = artistRelationship($artist['id'], $user['Artist']);
 						if (!$relationship) {
             	echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'familiarity' . round($artist['familiarity'] * 10)));
@@ -321,36 +318,36 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
 				?>
         </tr>
         </table>
-        <?php
-				
-		  // AFFICHAGE PAR POPULARITE
-			} elseif ($edition['Artist']) { ?>
-				<table width="100%" class="days">
+      <?php
+			}
+			
+			// AFFICHAGE PAR POPULARITE (dès qu'il y a des artistes OU que l'on peut afficher par jour)
+			if ($edition['Artist'] || $canDisplayDays) { ?>
+				<table width="100%" class="days" id="lineup-<?php echo $anneeedition; ?>">
         <tr>
         <td class="td-artist">
-        <?php
-				foreach ($edition['Artist'] as $y => $artist){ ?>
-					<?php
-					if ($y !== 0)
-						echo '. ';
-					
-					$relationship = artistRelationship($artist['id'], $user['Artist']);
-					if (!$relationship) {
-						echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'familiarity' . round($artist['familiarity'] * 10)));
-					} else {
-						echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'followed familiarity' . round($artist['familiarity'] * 10)));
-					}
-        }
-				if ($edition['Edition']['date_lineup'] != '2000-01-01' && $edition['Edition']['date_lineup'] != '1970-01-01' && $edition['Edition']['date_lineup'] != '0000-00-00') {
-					$ts = strtotime($edition['Edition']['date_lineup']);
-					if ($ts > time())
-						echo "<br /><br /><div class='date-lineup'>La lineup complète sera annoncée le " . utf8_encode(strftime("%d %B %Y", $ts)) . '.</div>';
-				} else {
-					$ts_edition = strtotime($edition['Edition']['date_start']);
-					if ($ts_edition > time())
-						echo "<br /><br /><div class='date-lineup'>D'autres artistes sont encore à venir.</div>";
-				}
-				?>
+          <?php
+  				foreach ($edition['Artist'] as $y => $artist) { 
+  					if ($y !== 0)	echo '. ';
+  					$relationship = artistRelationship($artist['id'], $user['Artist']);
+  					
+  					if (!$relationship) {
+  						echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'familiarity' . round($artist['familiarity'] * 10)));
+  					} else {
+  						echo $this->Html->link($artist['name'], '/artist/' . $artist['url'], array('class' => 'followed familiarity' . round($artist['familiarity'] * 10)));
+  					}
+          }
+          
+  				if ($edition['Edition']['date_lineup'] != '2000-01-01' && $edition['Edition']['date_lineup'] != '1970-01-01' && $edition['Edition']['date_lineup'] != '0000-00-00') {
+  					$ts = strtotime($edition['Edition']['date_lineup']);
+  					if ($ts > time())
+  						echo "<br /><br /><div class='date-lineup'>La lineup complète sera annoncée le " . utf8_encode(strftime("%d %B %Y", $ts)) . '.</div>';
+  				} else {
+  					$ts_edition = strtotime($edition['Edition']['date_start']);
+  					if ($ts_edition > time())
+  						echo "<br /><br /><div class='date-lineup'>D'autres artistes sont encore à venir.</div>";
+  				}
+  				?>
         </td>
         </tr>
         </table>
@@ -422,8 +419,6 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
         	   echo $this->Html->link($this->Html->image('user/profilepics/default.jpg', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
         }
         ?>
-        </div>
-        <div class="spacer"></div><br />
       </div>
       <?php } ?>
       
@@ -440,74 +435,14 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
         	   echo $this->Html->link($this->Html->image('user/profilepics/default.jpg', array('original-title' => $festivalier['login'], 'class' => 'ppic tooltip')), '/profil/' . $festivalier['login'], array('escape' => false));
         }
         ?>
-      </div>
+        </div>
+        <?php } ?>
         
-      <div class="more-infos">
-        <h2>Informations</h2>
-        <p><?php echo $this->Html->image('flags/' . $festival['Country']['locale'].'.png', array('class' => 'flag', 'width' => '24px', 'height' => '17px'));?> Lieu :
-        <?php 
-    		if ($festival['Country']['locale'] != 'fre') {
-    			echo $festival['Country']['name'];
-    		} else {
-          if(isset($festival['Region']['name'])) echo $festival['Region']['name'];
-          if(isset($festival['City']['name'])) echo ', '. $festival['City']['name'] . ' ('. $festival['Department']['code'].')';
-    		} ?></p>
-        
-        <br /><br />
       
-      
-        <ul class="infos_list">
-          <?php if (isset($festival['Festival']['capacity']) && $festival['Festival']['capacity'] != 0) { ?>
-          <li class="infos-places">
-            <?php echo $this->Html->image('icons/people.png', array('class' => '')); ?>
-            <span>&nbsp;Nombre de places : <?php echo $festival['Festival']['capacity']; ?></span>
-          </li>
-          <?php 
-          }
-    			if (isset($editions[0]['Edition']['price']) && $editions[0]['Edition']['price'] != 0) { ?>
-          <li class="infos-website">
-            <?php echo $this->Html->image('icons/euro.png', array('class' => '')); ?>
-            <span>&nbsp;Prix : <?php echo $editions[0]['Edition']['price']; ?> euros</span>
-          </li>
-          <?php 
-          }
-    			if (isset($festival['Festival']['creation_year']) && $festival['Festival']['creation_year'] != 0) { ?>
-          <li class="infos-website">
-            <?php echo $this->Html->image('icons/calendar.png', array('class' => '')); ?>
-            <span>&nbsp;Date de création : <?php echo $festival['Festival']['creation_year']; ?></span>
-          </li>
-          <?php 
-          }
-          if (isset($festival['Festival']['website'])) { ?>
-          <li class="infos-website">
-            <?php echo $this->Html->image('icons/link.png', array('class' => '')); ?>
-            <span>&nbsp;Site : <?php echo $this->Html->link($festival['Festival']['website'], 'http://' . $festival['Festival']['website']); ?></span>
-          </li>
-          <?php 
-          }
-    			/*
-          if (isset($festival['Festival']['email'])) { ?>
-          <li class="infos-contact">
-            <?php echo $this->Html->image('icons/contact.png', array('class' => '')); ?>
-            <span>&nbsp;<?php echo $this->Html->link('Contacter le festival', 'mailto:' . $festival['Festival']['email']); ?></span>
-          </li>
-          <?php } */?>
-        </ul>
-      </div>
-
-        
-      <div class="spacer"></div><br />
     </div>
-      <?php } ?>
-      
-      
-      <!-- <div id="tabs-<?php echo $anneeedition; ?>-videos"> 
-        <p></p>
-      </div>
-      -->
 
-    <?php if ($key != $last_key) echo '<hr class="edition_separator" />';
-      }
+    <?php
+    }
     }
     ?>
   

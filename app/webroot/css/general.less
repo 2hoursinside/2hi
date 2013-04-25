@@ -171,7 +171,7 @@ ul.infos-circles li.map { -webkit-mask-box-image: url('../img/mask_maps.svg'); }
 
 #menu-editions { 
   background: white; height: 55px; width: 100%; border-top:2px dashed @lgrey; border-bottom:2px dashed @lgrey; 
-  margin-top: 30px; margin-bottom: 20px; clear: both;
+  margin-top: 30px; margin-bottom: 20px; clear: both; overflow: hidden;
     
   ul { width: 977px; margin: auto; }
   li {
@@ -197,7 +197,7 @@ ul.infos-circles li.map { -webkit-mask-box-image: url('../img/mask_maps.svg'); }
 
 
 
-.edition { padding:  26px 0 4px 0; 
+.edition { padding:  26px 0 150px 0; 
   
   h2 { font-weight: normal; font-size: 30px; margin-bottom: 15px;
     .affinity { color: @lgrey; padding-left: 10px; font-size: 25px; }
@@ -228,7 +228,7 @@ ul.infos-circles li.map { -webkit-mask-box-image: url('../img/mask_maps.svg'); }
     box-shadow:  0px 2px 2px 0px rgba(0, 0, 0, 0.3);
     
     li {  float: left; background: white; 
-      a { color: @black; display: block; padding: 14px 20px 14px 38px; opacity: 0.2; }
+      a { color: @black; display: block; padding: 14px 20px 14px 38px; opacity: 0.5; filter:alpha(opacity=50); }
     }
     li.active { 
       background: #f6f6f6;
@@ -240,8 +240,10 @@ ul.infos-circles li.map { -webkit-mask-box-image: url('../img/mask_maps.svg'); }
       background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 100%);
       background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 100%);
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='ffffff', endColorstr='f6f6f6',GradientType=0 );
-
       a { color: @black; opacity: 1; }
+    }
+    li .disabled {
+      a { opacity: 0.2; filter:alpha(opacity=20);}
     }
     
     li.by-popularity { border-top-left-radius: 3px; border-bottom-left-radius:3px; border-right:1px solid white; 

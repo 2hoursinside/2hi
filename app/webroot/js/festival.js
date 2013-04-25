@@ -7,7 +7,8 @@ $(document).ready(function() {
     preserveWords: true
   });
   
-  $( ".tabs" ).tabs();
+  $("#menu-editions").tabify();
+  $(".menu-display").tabify();
 	
 	$("a[rel=photos]").fancybox({
 		'transitionIn'		: 'none',
