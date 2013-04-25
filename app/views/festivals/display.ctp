@@ -138,8 +138,13 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
         <?php 
         }
         if (isset($editions[0]['Edition']['price']) && $editions[0]['Edition']['price'] != 0) { ?>
-        <li class="price">
-          <?php echo $editions[0]['Edition']['price']; ?> <span>euros</span>
+        <li class="price tooltip" original-title="Acheter sur le site <br />du festival">
+          <?php 
+          if (!empty($festival['Festival']['website'])) {
+            echo $this->Html->link($editions[0]['Edition']['price'] . '<span>euros</span>', 'http://' . $festival['Festival']['website'], array('escape' => false, 'target' => '_blank', 'rel' => 'nofollow'));
+          } else {
+            echo $editions[0]['Edition']['price'] . '<span>euros</span>';
+          } ?>
         </li>
         <?php 
         }
@@ -244,7 +249,7 @@ $client->setCurlOptions(array(CURLOPT_FOLLOWLOCATION => 1));
   			echo 'du '. strftime("%d %B", $ts_start) . ' au ' . strftime("%d %B", $ts_end);
   		}
   		echo ' ' . $anneeedition; ?>
-  		<span class="affinity"> (<?php echo round($fest_affinity*100); ?>% d'affinité)</span>
+  		<?php if ($timestamp > time()) echo '<span class="affinity"> (' . round($fest_affinity*100) . '% d\'affinité)</span>'; ?>
   		</h2>
       
       
